@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>管理ダッシュボード（実装イメージ） ｜ 株式会社S-Style</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Shippori+Mincho:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>
+  body{margin:0}
+  a{text-decoration:none;color:inherit}
+  input,textarea,select{font-family:inherit}
+  input:focus,textarea:focus,select:focus{outline:2px solid #22564b;outline-offset:1px}
+  .tab{transition:background .15s,color .15s}
+  .tab:hover{background:rgba(34,86,75,.08)}
+  .rowcard{transition:box-shadow .15s}
+  .rowcard:hover{box-shadow:0 6px 18px rgba(31,77,64,.1)}
+  .dbtn{transition:transform .15s}
+  .dbtn:hover{transform:translateY(-1px)}
+  .del:hover{background:#f6dede !important;color:#b33a2e !important}
+  @media (max-width:900px){
+    .dash-shell{grid-template-columns:1fr !important}
+    .dash-tabs{flex-direction:row !important;overflow-x:auto !important;gap:6px !important}
+    .g2{grid-template-columns:1fr !important}
+  }
+</style>
+</helmet>
+
+<div style="background:#f4f1e8;color:#0d3b2c;font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh">
+
+<header style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:16px 5vw;background:#123329;border-bottom:2px solid #c9a86e">
+<div style="display:flex;align-items:center;gap:12px">
+<img src="assets/bibi-logo.webp" alt="S-Style" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid #c9a86e">
+<div>
+<div style="font:700 17px 'Shippori Mincho',serif;color:#fff">S-Style 管理ダッシュボード</div>
+<div style="font-size:11px;color:#e6cf9c;font-weight:700;margin-top:1px">実装イメージ（Claude Code連携用プロトタイプ）</div>
+</div>
+</div>
+<a href="index.dc.html" style="font-size:12.5px;color:#a9d5c4;font-weight:700">サイトを見る →</a>
+</header>
+
+<div style="max-width:1160px;margin:0 auto;padding:32px 5vw 64px">
+<div style="background:#eef3ef;border:1px solid #cfe0d6;border-radius:14px;padding:14px 20px;font-size:12.5px;color:#3b5248;font-weight:500;margin-bottom:28px;line-height:1.8">
+このダッシュボードは<b>実装イメージ</b>です。ここで編集した内容は保存されません。Claude Codeでの開発時、この5項目（拠点・契約先／お知らせ／お問い合わせ送信先／代表者写真）だけがここから更新でき、他の文言・レイアウトはコードで直接編集する想定です。
+</div>
+
+<div class="dash-shell" style="display:grid;grid-template-columns:220px 1fr;gap:28px;align-items:start">
+
+<!-- tabs -->
+<nav class="dash-tabs" style="display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid #eceadb;border-radius:16px;padding:10px;position:sticky;top:84px">
+<div class="tab" onClick="{{ setTab_bases }}" style="{{ tabStyle_bases }}">拠点・契約先</div>
+<div class="tab" onClick="{{ setTab_news }}" style="{{ tabStyle_news }}">お知らせ</div>
+<div class="tab" onClick="{{ setTab_routing }}" style="{{ tabStyle_routing }}">お問い合わせ送信先</div>
+<div class="tab" onClick="{{ setTab_photo }}" style="{{ tabStyle_photo }}">代表者写真</div>
+</nav>
+
+<!-- content -->
+<div>
+
+<!-- BASES TAB -->
+<sc-if value="{{ isBases }}" hint-placeholder-val="{{ true }}">
+<div style="background:#fff;border:1px solid #eceadb;border-radius:20px;padding:30px">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+<h2 style="font:700 20px 'Shippori Mincho',serif;margin:0;color:#1f4d40">拠点・契約先の管理</h2>
+<div class="dbtn" onClick="{{ addBase }}" style="cursor:pointer;padding:10px 20px;background:#22564b;color:#fff;border-radius:999px;font-size:13px;font-weight:700">＋ 拠点を追加</div>
+</div>
+
+<sc-for list="{{ bases }}" as="base" hint-placeholder-count="2">
+<div class="rowcard" style="border:1px solid #eceadb;border-radius:16px;padding:18px 20px;margin-bottom:14px">
+<div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+<input value="{{ base.name }}" onChange="{{ base.onNameChange }}" placeholder="拠点名（例：千葉県）" style="flex:1;min-width:160px;padding:10px 12px;border:1.5px solid #dbe4dd;border-radius:10px;font-size:13.5px;font-weight:700;color:#1f4d40;background:#fbfdfb">
+<select value="{{ base.role }}" onChange="{{ base.onRoleChange }}" style="padding:10px 12px;border:1.5px solid #dbe4dd;border-radius:10px;font-size:13px;background:#fbfdfb"><option value="本拠点">本拠点</option><option value="支店">支店</option></select>
+<div class="dbtn del" onClick="{{ base.onRemove }}" style="cursor:pointer;padding:8px 14px;background:#f6efe1;color:#8a7248;border-radius:999px;font-size:12px;font-weight:700">拠点を削除</div>
+</div>
+
+<div style="font-size:12px;color:#8aa89a;font-weight:700;margin:0 0 8px">契約ゴルフ場（{{ base.courseCount }}件）</div>
+<sc-for list="{{ base.courses }}" as="course" hint-placeholder-count="2">
+<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">
+<input value="{{ course.name }}" onChange="{{ course.onChange }}" style="flex:1;padding:9px 12px;border:1.5px solid #eceadb;border-radius:10px;font-size:13px;background:#fbfdfb">
+<div class="dbtn del" onClick="{{ course.onRemove }}" style="cursor:pointer;width:32px;height:32px;flex:none;display:flex;align-items:center;justify-content:center;background:#f6f5ee;border-radius:10px;font-size:14px;color:#9aa89f;font-weight:700">×</div>
+</div>
+</sc-for>
+<div class="dbtn" onClick="{{ base.onAddCourse }}" style="display:inline-block;cursor:pointer;margin-top:4px;padding:8px 16px;background:#eee9dd;color:#1f4d40;border-radius:999px;font-size:12px;font-weight:700">＋ 契約先を追加</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- NEWS TAB -->
+<sc-if value="{{ isNews }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #eceadb;border-radius:20px;padding:30px">
+<h2 style="font:700 20px 'Shippori Mincho',serif;margin:0 0 20px;color:#1f4d40">お知らせの管理</h2>
+
+<div style="background:#f6f5ee;border-radius:16px;padding:22px;margin-bottom:24px">
+<div style="font-size:13px;font-weight:700;color:#1f4d40;margin-bottom:14px">新規お知らせを作成</div>
+<div class="g2" style="display:grid;grid-template-columns:160px 160px 1fr;gap:12px;margin-bottom:12px">
+<input type="date" value="{{ draft.date }}" onChange="{{ draft.onDateChange }}" style="padding:11px 12px;border:1.5px solid #dbe4dd;border-radius:10px;font-size:13px;background:#fbfdfb">
+<select value="{{ draft.category }}" onChange="{{ draft.onCategoryChange }}" style="padding:11px 12px;border:1.5px solid #dbe4dd;border-radius:10px;font-size:13px;background:#fbfdfb"><option>契約情報</option><option>サービス</option><option>グッズ</option><option>イベント</option><option>お知らせ</option></select>
+<input value="{{ draft.title }}" onChange="{{ draft.onTitleChange }}" placeholder="タイトル（例：〇〇ゴルフ場との契約がスタートしました）" style="padding:11px 12px;border:1.5px solid #dbe4dd;border-radius:10px;font-size:13px;background:#fbfdfb">
+</div>
+<textarea value="{{ draft.body }}" onChange="{{ draft.onBodyChange }}" placeholder="本文" rows="3" style="width:100%;box-sizing:border-box;padding:11px 12px;border:1.5px solid #dbe4dd;border-radius:10px;font-size:13px;background:#fbfdfb;resize:vertical;margin-bottom:12px"></textarea>
+<div class="dbtn" onClick="{{ addNews }}" style="display:inline-block;cursor:pointer;padding:11px 26px;background:#22564b;color:#fff;border-radius:999px;font-size:13px;font-weight:700">お知らせを公開</div>
+</div>
+
+<sc-for list="{{ news }}" as="item" hint-placeholder-count="3">
+<div class="rowcard" style="display:flex;gap:14px;align-items:center;border:1px solid #eceadb;border-radius:14px;padding:14px 18px;margin-bottom:10px">
+<span style="font-size:12.5px;color:#8aa89a;font-weight:700;flex:none;width:88px">{{ item.date }}</span>
+<span style="font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;background:#eee9dd;color:#1f4d40;flex:none">{{ item.category }}</span>
+<span style="flex:1;font-size:13.5px;font-weight:700;color:#123329">{{ item.title }}</span>
+<div class="dbtn del" onClick="{{ item.onRemove }}" style="cursor:pointer;padding:7px 14px;background:#f6efe1;color:#8a7248;border-radius:999px;font-size:12px;font-weight:700;flex:none">削除</div>
+</div>
+</sc-for>
+</div>
+</sc-if>
+
+<!-- ROUTING TAB -->
+<sc-if value="{{ isRouting }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #eceadb;border-radius:20px;padding:30px">
+<h2 style="font:700 20px 'Shippori Mincho',serif;margin:0 0 8px;color:#1f4d40">お問い合わせ送信先の設定</h2>
+<p style="font-size:13px;color:#5d6b5a;margin:0 0 24px;font-weight:500">フォーム種別ごとに送信先メールアドレスを登録します。</p>
+
+<div style="display:flex;flex-direction:column;gap:16px">
+<label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:700;color:#123329">ゴルフ場お問い合わせ（contact-course）<input value="{{ routing.course }}" onChange="{{ routing.onCourseChange }}" placeholder="course@s-style.example.jp" style="padding:13px 14px;border:1.5px solid #dbe4dd;border-radius:12px;font-size:14px;background:#fbfdfb"></label>
+<label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:700;color:#123329">イベントキャディお問い合わせ（contact-event）<input value="{{ routing.event }}" onChange="{{ routing.onEventChange }}" placeholder="event@s-style.example.jp" style="padding:13px 14px;border:1.5px solid #dbe4dd;border-radius:12px;font-size:14px;background:#fbfdfb"></label>
+<label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:700;color:#123329">採用エントリー（recruit）<input value="{{ routing.recruit }}" onChange="{{ routing.onRecruitChange }}" placeholder="recruit@s-style.example.jp" style="padding:13px 14px;border:1.5px solid #dbe4dd;border-radius:12px;font-size:14px;background:#fbfdfb"></label>
+</div>
+
+<div class="dbtn" onClick="{{ saveRouting }}" style="display:inline-block;cursor:pointer;margin-top:22px;padding:13px 30px;background:#22564b;color:#fff;border-radius:999px;font-size:13.5px;font-weight:700">保存する</div>
+<sc-if value="{{ routingSaved }}" hint-placeholder-val="{{ false }}"><span style="margin-left:14px;font-size:12.5px;color:#1f8a5b;font-weight:700">✓ 保存しました</span></sc-if>
+</div>
+</sc-if>
+
+<!-- PHOTO TAB -->
+<sc-if value="{{ isPhoto }}" hint-placeholder-val="{{ false }}">
+<div style="background:#fff;border:1px solid #eceadb;border-radius:20px;padding:30px">
+<h2 style="font:700 20px 'Shippori Mincho',serif;margin:0 0 8px;color:#1f4d40">代表者写真の差し替え</h2>
+<p style="font-size:13px;color:#5d6b5a;margin:0 0 22px;font-weight:500">会社案内ページ「代表挨拶」に使用する写真です。横長の写真を推奨します。</p>
+<image-slot id="president-photo" src="assets/president-photo.jpg" shape="rounded" radius="20" placeholder="代表者の写真（横長）をドラッグ＆ドロップ" style="display:block;width:100%;max-width:640px;height:280px"></image-slot>
+</div>
+</sc-if>
+
+</div>
+</div>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    tab: 'bases',
+    bases: [
+      { name: '千葉県', role: '本拠点', courses: ['カレドニアン・ゴルフクラブ','グリッサンドゴルフクラブ','PGM総成ゴルフクラブ'] },
+      { name: '北海道', role: '支店', courses: ['御前水ゴルフ倶楽部'] },
+      { name: '沖縄県', role: '支店', courses: ['カヌチャベイリゾートゴルフコース','PGMゴルフリゾート沖縄'] }
+    ],
+    news: [
+      { date: '2026-06-28', category: '契約情報', title: '〇〇ゴルフ倶楽部との契約がスタートしました' },
+      { date: '2026-06-15', category: 'サービス', title: 'キャディ手配サービス「TeeRA」をリリースしました' },
+      { date: '2026-06-01', category: 'グッズ', title: 'BiBiオリジナルグッズの販売を開始しました' }
+    ],
+    draft: { date: '', category: '契約情報', title: '', body: '' },
+    routing: { course: 'course@s-style.example.jp', event: 'event@s-style.example.jp', recruit: 'recruit@s-style.example.jp' },
+    routingSaved: false
+  };
+
+  setTab(t) { this.setState({ tab: t }); }
+
+  addBase() {
+    this.setState(s => ({ bases: [...s.bases, { name: '', role: '支店', courses: [] }] }));
+  }
+  removeBase(i) {
+    this.setState(s => ({ bases: s.bases.filter((_, idx) => idx !== i) }));
+  }
+  updateBase(i, patch) {
+    this.setState(s => ({ bases: s.bases.map((b, idx) => idx === i ? { ...b, ...patch } : b) }));
+  }
+  addCourse(i) {
+    this.setState(s => ({ bases: s.bases.map((b, idx) => idx === i ? { ...b, courses: [...b.courses, ''] } : b) }));
+  }
+  removeCourse(i, ci) {
+    this.setState(s => ({ bases: s.bases.map((b, idx) => idx === i ? { ...b, courses: b.courses.filter((_, cidx) => cidx !== ci) } : b) }));
+  }
+  updateCourse(i, ci, val) {
+    this.setState(s => ({ bases: s.bases.map((b, idx) => idx === i ? { ...b, courses: b.courses.map((c, cidx) => cidx === ci ? val : c) } : b) }));
+  }
+
+  addNews() {
+    const d = this.state.draft;
+    if (!d.title) return;
+    this.setState(s => ({
+      news: [{ date: d.date || '未設定', category: d.category, title: d.title }, ...s.news],
+      draft: { date: '', category: '契約情報', title: '', body: '' }
+    }));
+  }
+  removeNews(i) {
+    this.setState(s => ({ news: s.news.filter((_, idx) => idx !== i) }));
+  }
+  updateDraft(patch) {
+    this.setState(s => ({ draft: { ...s.draft, ...patch } }));
+  }
+
+  updateRouting(patch) {
+    this.setState(s => ({ routing: { ...s.routing, ...patch }, routingSaved: false }));
+  }
+  saveRouting() {
+    this.setState({ routingSaved: true });
+  }
+
+  tabStyle(name) {
+    const active = this.state.tab === name;
+    return `cursor:pointer;padding:12px 16px;border-radius:12px;font-size:13.5px;font-weight:700;${active ? 'background:#22564b;color:#fff;' : 'color:#3b5248;'}`;
+  }
+
+  renderVals() {
+    const bases = this.state.bases.map((b, i) => ({
+      name: b.name,
+      role: b.role,
+      courseCount: b.courses.length,
+      onNameChange: (e) => this.updateBase(i, { name: e.target.value }),
+      onRoleChange: (e) => this.updateBase(i, { role: e.target.value }),
+      onRemove: () => this.removeBase(i),
+      onAddCourse: () => this.addCourse(i),
+      courses: b.courses.map((c, ci) => ({
+        name: c,
+        onChange: (e) => this.updateCourse(i, ci, e.target.value),
+        onRemove: () => this.removeCourse(i, ci)
+      }))
+    }));
+
+    const news = this.state.news.map((n, i) => ({
+      date: n.date, category: n.category, title: n.title,
+      onRemove: () => this.removeNews(i)
+    }));
+
+    return {
+      isBases: this.state.tab === 'bases',
+      isNews: this.state.tab === 'news',
+      isRouting: this.state.tab === 'routing',
+      isPhoto: this.state.tab === 'photo',
+      setTab_bases: () => this.setTab('bases'),
+      setTab_news: () => this.setTab('news'),
+      setTab_routing: () => this.setTab('routing'),
+      setTab_photo: () => this.setTab('photo'),
+      tabStyle_bases: this.tabStyle('bases'),
+      tabStyle_news: this.tabStyle('news'),
+      tabStyle_routing: this.tabStyle('routing'),
+      tabStyle_photo: this.tabStyle('photo'),
+      bases,
+      addBase: () => this.addBase(),
+      news,
+      draft: {
+        date: this.state.draft.date,
+        category: this.state.draft.category,
+        title: this.state.draft.title,
+        body: this.state.draft.body,
+        onDateChange: (e) => this.updateDraft({ date: e.target.value }),
+        onCategoryChange: (e) => this.updateDraft({ category: e.target.value }),
+        onTitleChange: (e) => this.updateDraft({ title: e.target.value }),
+        onBodyChange: (e) => this.updateDraft({ body: e.target.value })
+      },
+      addNews: () => this.addNews(),
+      routing: {
+        course: this.state.routing.course,
+        event: this.state.routing.event,
+        recruit: this.state.routing.recruit,
+        onCourseChange: (e) => this.updateRouting({ course: e.target.value }),
+        onEventChange: (e) => this.updateRouting({ event: e.target.value }),
+        onRecruitChange: (e) => this.updateRouting({ recruit: e.target.value })
+      },
+      routingSaved: this.state.routingSaved,
+      saveRouting: () => this.saveRouting()
+    };
+  }
+}
+
+</script>
+</body>
+</html>

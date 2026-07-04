@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+  @media (max-width:860px){
+    .base-grid{grid-template-columns:repeat(2,1fr) !important}
+  }
+</style>
+</helmet>
+<section id="bases" style="max-width:1000px;margin:0 auto;padding:12px 5vw 64px;scroll-margin-top:80px">
+<h2 style="font:700 24px 'Shippori Mincho',serif;color:#1f4d40;margin:0 0 8px">拠点一覧</h2>
+<p style="font-size:13.5px;color:#5d6b5a;margin:0 0 24px;font-weight:500">本拠点の千葉を中心に、全国7支店を展開しています。<b style="color:#1f4d40">拠点をタップすると、契約ゴルフ場の一覧が表示されます。</b></p>
+<div class="base-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+<div class="base-card" onClick="{{ open0 }}" style="background:#22564b;color:#fff;border-radius:16px;padding:20px 16px;text-align:center"><div style="font:700 17px 'Shippori Mincho',serif">千葉県</div><div style="font-size:11px;margin-top:4px;color:#eee9dd;font-weight:700">契約先13件</div><div style="margin-top:10px;font-size:11px;font-weight:700;color:#fff;background:rgba(255,255,255,.18);border-radius:999px;padding:4px 0">契約先を見る ▸</div></div>
+<div class="base-card" onClick="{{ open1 }}" style="background:#fff;border:1px solid #e7ecdf;border-radius:16px;padding:20px 16px;text-align:center"><div style="font:700 17px 'Shippori Mincho',serif;color:#123329">北海道</div><div style="font-size:11px;margin-top:4px;color:#8aa89a;font-weight:700">契約先1件</div><div style="margin-top:10px;font-size:11px;font-weight:700;color:#22564b;background:#eee9dd;border-radius:999px;padding:4px 0">契約先を見る ▸</div></div>
+<div class="base-card" onClick="{{ open7 }}" style="background:#fff;border:1px solid #e7ecdf;border-radius:16px;padding:20px 16px;text-align:center"><div style="font:700 17px 'Shippori Mincho',serif;color:#123329">沖縄県</div><div style="font-size:11px;margin-top:4px;color:#8aa89a;font-weight:700">契約先6件</div><div style="margin-top:10px;font-size:11px;font-weight:700;color:#22564b;background:#eee9dd;border-radius:999px;padding:4px 0">契約先を見る ▸</div></div>
+<div class="base-card" onClick="{{ open2 }}" style="background:#fff;border:1px solid #e7ecdf;border-radius:16px;padding:20px 16px;text-align:center"><div style="font:700 17px 'Shippori Mincho',serif;color:#123329">埼玉県</div><div style="font-size:11px;margin-top:4px;color:#8aa89a;font-weight:700">契約先2件</div><div style="margin-top:10px;font-size:11px;font-weight:700;color:#22564b;background:#eee9dd;border-radius:999px;padding:4px 0">契約先を見る ▸</div></div>
+<div class="base-card" onClick="{{ open3 }}" style="background:#fff;border:1px solid #e7ecdf;border-radius:16px;padding:20px 16px;text-align:center"><div style="font:700 17px 'Shippori Mincho',serif;color:#123329">山梨県</div><div style="font-size:11px;margin-top:4px;color:#8aa89a;font-weight:700">契約先2件</div><div style="margin-top:10px;font-size:11px;font-weight:700;color:#22564b;background:#eee9dd;border-radius:999px;padding:4px 0">契約先を見る ▸</div></div>
+<div class="base-card" onClick="{{ open4 }}" style="background:#fff;border:1px solid #e7ecdf;border-radius:16px;padding:20px 16px;text-align:center"><div style="font:700 17px 'Shippori Mincho',serif;color:#123329">三重県</div><div style="font-size:11px;margin-top:4px;color:#8aa89a;font-weight:700">契約先1件</div><div style="margin-top:10px;font-size:11px;font-weight:700;color:#22564b;background:#eee9dd;border-radius:999px;padding:4px 0">契約先を見る ▸</div></div>
+<div class="base-card" onClick="{{ open5 }}" style="background:#fff;border:1px solid #e7ecdf;border-radius:16px;padding:20px 16px;text-align:center"><div style="font:700 17px 'Shippori Mincho',serif;color:#123329">大阪府</div><div style="font-size:11px;margin-top:4px;color:#8aa89a;font-weight:700">契約先1件</div><div style="margin-top:10px;font-size:11px;font-weight:700;color:#22564b;background:#eee9dd;border-radius:999px;padding:4px 0">契約先を見る ▸</div></div>
+<div class="base-card" onClick="{{ open6 }}" style="background:#fff;border:1px solid #e7ecdf;border-radius:16px;padding:20px 16px;text-align:center"><div style="font:700 17px 'Shippori Mincho',serif;color:#123329">兵庫県</div><div style="font-size:11px;margin-top:4px;color:#8aa89a;font-weight:700">契約先3件</div><div style="margin-top:10px;font-size:11px;font-weight:700;color:#22564b;background:#eee9dd;border-radius:999px;padding:4px 0">契約先を見る ▸</div></div>
+</div>
+</section>
+
+<sc-if value="{{ modalOpen }}" hint-placeholder-val="{{ false }}">
+<div onClick="{{ closeModal }}" style="position:fixed;inset:0;background:rgba(11,61,44,.55);z-index:100;display:flex;align-items:center;justify-content:center;padding:24px">
+<div onClick="{{ stop }}" style="background:#fbf9f0;border-radius:26px;max-width:560px;width:100%;max-height:82vh;overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.3)">
+<div style="position:sticky;top:0;background:#22564b;color:#fff;padding:24px 28px;display:flex;align-items:center;justify-content:space-between">
+<div style="display:flex;align-items:center;gap:12px">
+<div style="width:40px;height:46px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font:700 15px 'Shippori Mincho',serif;border-radius:12px">{{ selectedRoleShort }}</div>
+<div><div style="font:700 20px 'Shippori Mincho',serif">{{ selectedName }}</div><div style="font-size:11.5px;color:#eee9dd;font-weight:700;margin-top:2px">契約ゴルフ場 {{ selectedCount }}件</div></div>
+</div>
+<div class="modal-x" onClick="{{ closeModal }}" style="width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;font-weight:700;transition:background .2s">×</div>
+</div>
+<div style="padding:22px 28px 28px">
+<sc-for list="{{ selectedCourses }}" as="course" hint-placeholder-count="3">
+<div style="display:flex;align-items:center;gap:14px;padding:15px 0;border-bottom:1px solid #eceadb">
+<div style="flex:none;width:34px;height:38px;background:#eee9dd;display:flex;align-items:center;justify-content:center;font:700 13px 'Shippori Mincho',serif;color:#22564b;border-radius:12px">{{ course.no }}</div>
+<div><div style="font-size:15px;font-weight:700;color:#123329">{{ course.name }}</div><div style="font-size:12px;color:#8aa89a;font-weight:500;margin-top:2px">{{ course.area }}</div></div>
+</div>
+</sc-for>
+</div>
+</div>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { openIdx: null };
+
+  bases() {
+    return [
+      { name: '千葉', role: '本拠点', courses: [
+        { name: 'カレドニアン・ゴルフクラブ', area: '千葉県' },
+        { name: 'グリッサンドゴルフクラブ', area: '千葉県' },
+        { name: 'PGM総成ゴルフクラブ', area: '千葉県' },
+        { name: '総武カントリークラブ総武コース', area: '千葉県' },
+        { name: '中山カントリークラブ', area: '千葉県' },
+        { name: '鷹之台カンツリークラブ', area: '千葉県' },
+        { name: '袖ヶ浦カンツリークラブ', area: '千葉県' },
+        { name: '京葉カントリー俱楽部', area: '千葉県' },
+        { name: '東京クラシッククラブ', area: '千葉県' },
+        { name: '麻倉ゴルフ倶楽部', area: '千葉県' },
+        { name: '浜野ゴルフクラブ', area: '千葉県' },
+        { name: 'ザ・カントリークラブ・ジャパン', area: '千葉県' },
+        { name: 'キングフィールズゴルフクラブ', area: '千葉県' } ] },
+      { name: '北海道', role: '支店', courses: [
+        { name: '御前水ゴルフ倶楽部', area: '北海道' } ] },
+      { name: '埼玉', role: '支店', courses: [
+        { name: '鳩山カントリークラブ', area: '埼玉県' },
+        { name: '嵐山カントリークラブ', area: '埼玉県' } ] },
+      { name: '山梨', role: '支店', courses: [
+        { name: '富士桜カントリー倶楽部', area: '山梨県' },
+        { name: '鳴沢ゴルフ俱楽部', area: '山梨県' } ] },
+      { name: '三重', role: '支店', courses: [
+        { name: 'スリーレイクスカントリークラブ', area: '三重県' } ] },
+      { name: '大阪', role: '支店', courses: [
+        { name: '茨木国際ゴルフ倶楽部', area: '大阪府' } ] },
+      { name: '兵庫', role: '支店', courses: [
+        { name: '鳴尾ゴルフ倶楽部', area: '兵庫県' },
+        { name: '吉川カントリー倶楽部', area: '兵庫県' },
+        { name: '西宮カントリー倶楽部', area: '兵庫県' } ] },
+      { name: '沖縄', role: '支店', courses: [
+        { name: 'カヌチャベイリゾートゴルフコース', area: '沖縄県' },
+        { name: 'PGMゴルフリゾート沖縄', area: '沖縄県' },
+        { name: '那覇ゴルフ倶楽部', area: '沖縄県' },
+        { name: '琉球ゴルフ倶楽部', area: '沖縄県' },
+        { name: 'ザ・サザンリンクスゴルフクラブ', area: '沖縄県' },
+        { name: 'パームヒルズゴルフリゾートクラブ', area: '沖縄県' } ] }
+    ];
+  }
+
+  renderVals() {
+    const list = this.bases();
+    const open = {};
+    for (let i = 0; i < 8; i++) {
+      open['open' + i] = () => this.setState({ openIdx: i });
+    }
+    const sel = this.state.openIdx == null ? null : list[this.state.openIdx];
+    return {
+      ...open,
+      modalOpen: this.state.openIdx != null,
+      selectedName: sel ? sel.name : '',
+      selectedRoleShort: sel ? (sel.role === '本拠点' ? '本部' : '支店') : '',
+      selectedCount: sel ? sel.courses.length : 0,
+      selectedCourses: sel ? sel.courses.map((c, i) => ({ no: i + 1, name: c.name, area: c.area })) : [],
+      closeModal: () => this.setState({ openIdx: null }),
+      stop: (e) => e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>

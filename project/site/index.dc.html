@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>株式会社S-Style ｜ 旅するキャディ・全国8拠点のキャディ派遣</title>
+<meta name="description" content="株式会社S-StyleはSランクキャディを育成し、全国8拠点から派遣するキャディ派遣会社です。契約ゴルフ場派遣・イベントキャディ・プレーヤー様のご指名に対応します。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&amp;family=Shippori+Mincho:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  body{margin:0}
+  a{text-decoration:none;color:inherit}
+  .navlink{position:relative;transition:opacity .2s}
+  .navlink:hover{opacity:.7}
+  .btn{transition:transform .15s,box-shadow .2s}
+  .btn:hover{transform:translateY(-2px)}
+  .gcard{transition:transform .2s,box-shadow .2s}
+  .gcard:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(31,77,64,.18)}
+  @media (max-width:860px){
+    .hdr-nav .navlink{display:none}
+    .hero-grid{grid-template-columns:1fr !important}
+    .hero-grid .hero-copy{padding:52px 6vw 20px !important}
+    .hero-grid .hero-visual{min-height:340px !important;order:-1}
+    .hero-visual > div{width:min(300px,72vw) !important}
+    .hero-visual img{width:280px !important;height:277px !important}
+    .g3{grid-template-columns:1fr !important}
+    .stats3{gap:10px !important}
+    .stats3 > div{padding:16px 8px !important}
+    .stats3 > div > div:first-child{font-size:28px !important}
+    .bases-grid{grid-template-columns:1fr !important}
+    .bases-tags{grid-template-columns:repeat(2,1fr) !important}
+    .day-grid{grid-template-columns:1fr !important;padding:40px 6vw !important}
+    .day-grid .day-visual{order:-1}
+    .news-row{grid-template-columns:1fr !important;gap:8px !important;text-align:left}
+    .news-row span:nth-child(2){justify-self:start}
+    .footer-grid{grid-template-columns:1fr 1fr !important}
+    .footer-grid > div:first-child{grid-column:1/-1}
+    section{padding-left:6vw !important;padding-right:6vw !important}
+  }
+</style>
+</helmet>
+
+<div style="background:radial-gradient(circle at 14% 8%,#e7f0ec,transparent 42%),radial-gradient(circle at 86% 14%,#f2ecdb,transparent 42%),radial-gradient(circle at 50% 96%,#e6eef0,transparent 46%),#f4f1e8;color:#0d3b2c;font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh">
+
+<!-- header -->
+<header style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 5vw;background:rgba(18,51,41,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:2px solid #c9a86e;box-shadow:0 2px 18px rgba(11,61,44,.25)">
+<!-- header/nav collapses on mobile via .hdr-nav -->
+<a href="index.dc.html" style="display:flex;align-items:center;gap:11px">
+<img src="assets/bibi-logo.webp" alt="S-Style BiBi" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid #c9a86e">
+<span style="font:700 20px 'Shippori Mincho',serif;color:#fff">S-Style</span>
+</a>
+<nav class="hdr-nav" style="display:flex;align-items:center;gap:26px;font-size:13.5px;color:#eafaf3;font-weight:700">
+<a class="navlink" href="about.dc.html">会社案内</a>
+<a class="navlink" href="caddie-day.dc.html">キャディの一日</a>
+<a class="navlink" href="event.dc.html">イベントキャディ</a>
+<a class="navlink" href="recruit.dc.html">採用情報</a>
+<a class="navlink" href="blog.dc.html">お知らせ</a>
+<a class="btn" href="contact-course.dc.html" style="padding:11px 22px;background:#c9a86e;color:#463216;border-radius:999px;font-weight:700">お問い合わせ</a>
+</nav>
+</header>
+
+<!-- hero (stained glass) -->
+<section class="hero-grid" style="position:relative;overflow:hidden;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;color:#fff;background:radial-gradient(circle at 18% 26%,rgba(58,143,124,.95),transparent 44%),radial-gradient(circle at 74% 16%,rgba(30,132,150,.92),transparent 48%),radial-gradient(circle at 86% 74%,rgba(178,138,82,.88),transparent 44%),radial-gradient(circle at 34% 86%,rgba(110,79,128,.82),transparent 48%),#173b33">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(63deg,rgba(6,16,12,.42) 0 2px,transparent 2px 46px),repeating-linear-gradient(-63deg,rgba(6,16,12,.42) 0 2px,transparent 2px 46px)"></div>
+<div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,rgba(12,33,27,.62),rgba(12,33,27,.15) 55%,transparent)"></div>
+
+<div class="hero-copy" style="position:relative;padding:82px 5vw">
+<div style="display:inline-block;padding:9px 20px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.4);border-radius:999px;font-size:12.5px;font-weight:700;margin-bottom:24px">全国8拠点 ／ Sランクキャディ育成</div>
+<h1 style="font:700 clamp(38px,4.4vw,56px)/1.35 'Shippori Mincho',serif;margin:0 0 22px;text-shadow:0 2px 18px rgba(0,0,0,.35)">日本全国を、<br>旅するキャディ。</h1>
+<p style="font-size:16px;line-height:2;color:rgba(255,255,255,.95);margin:0 0 34px;max-width:440px;font-weight:500;text-shadow:0 1px 8px rgba(0,0,0,.3)">王冠のクイーンビー「BiBi」と一緒に。Sランクキャディを育て、全国へお届けします。契約ゴルフ場からイベント、ご指名まで。</p>
+<div style="display:flex;gap:12px;flex-wrap:wrap">
+<a class="btn" href="contact-course.dc.html" style="padding:16px 32px;background:#c9a86e;color:#463216;border-radius:999px;font-weight:700;font-size:15px;box-shadow:0 12px 26px rgba(0,0,0,.28)">ゴルフ場/相談窓口</a>
+<a class="btn" href="recruit.dc.html" style="padding:16px 32px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;border:1.5px solid rgba(255,255,255,.6);border-radius:999px;font-weight:700;font-size:15px">キャディ募集を見る</a>
+</div>
+</div>
+
+<div class="hero-visual" style="position:relative;display:flex;align-items:center;justify-content:center;min-height:520px">
+<div style="position:relative;width:min(450px,88%);aspect-ratio:1;display:flex;align-items:center;justify-content:center">
+<div style="position:absolute;inset:7%;border-radius:50%;overflow:hidden;background:#fff;box-shadow:0 0 0 8px #fff,0 0 0 12px #c9a86e,0 24px 60px rgba(0,0,0,.3)">
+<div style="position:absolute;inset:0;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,.9),transparent 60%)"></div>
+</div>
+<img src="assets/bibi-cutout.png" alt="S-Style BiBi" style="position: relative; width: 423px; height: 418px; filter: drop-shadow(0 12px 22px rgba(0,0,0,.3))">
+</div>
+</div>
+</section>
+
+<!-- stats (glass tiles) -->
+<section class="stats3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:18px;padding:44px 5vw 12px;max-width:1120px;margin:0 auto">
+<div style="text-align:center;padding:26px;background:rgba(58,143,124,.15);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(58,143,124,.4);border-radius:18px"><div style="font:700 40px 'Shippori Mincho',serif;color:#1f4d40">8</div><div style="font-size:13px;color:#3b5248;font-weight:700">全国拠点</div></div>
+<div style="text-align:center;padding:26px;background:rgba(30,132,150,.14);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(30,132,150,.4);border-radius:18px"><div style="font:700 40px 'Shippori Mincho',serif;color:#186a7e">Sランク</div><div style="font-size:13px;color:#3b5248;font-weight:700">育成基準</div></div>
+<div style="text-align:center;padding:26px;background:rgba(201,168,110,.2);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border:1px solid rgba(201,168,110,.5);border-radius:18px"><div style="font:700 40px 'Shippori Mincho',serif;color:#a5813f">単発OK</div><div style="font-size:13px;color:#564628;font-weight:700">イベント派遣</div></div>
+</section>
+
+<!-- services (frosted cards, glass gems) -->
+<section style="padding:52px 5vw">
+<div style="text-align:center;margin-bottom:38px"><div style="font:700 12px 'Shippori Mincho',serif;letter-spacing:.2em;color:#b28a52">SERVICE</div><h2 style="font:700 clamp(26px,3vw,32px) 'Shippori Mincho',serif;margin:8px 0 0;color:#1f4d40">3つの派遣のかたち</h2></div>
+<div class="g3" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1120px;margin:0 auto">
+<div class="gcard" style="background:rgba(255,255,255,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.75);border-radius:24px;padding:34px 30px;box-shadow:0 10px 30px rgba(31,77,64,.1);text-align:center"><div style="width:58px;height:66px;margin:0 auto 18px;background:linear-gradient(135deg,#3a8f7c,#1e8ca0);display:flex;align-items:center;justify-content:center;font:700 20px 'Shippori Mincho',serif;color:#fff;border-radius:12px;box-shadow:inset 0 2px 8px rgba(255,255,255,.35),0 6px 14px rgba(30,132,150,.3)">01</div><h3 style="font:700 19px 'Shippori Mincho',serif;margin:0 0 12px">契約ゴルフ場派遣</h3><p style="font-size:13.5px;line-height:1.95;color:#4d5f56;margin:0 0 18px;font-weight:500">育成済みのSランクキャディを、全国のご契約ゴルフ場へ安定してお届けします。</p><a href="contact-course.dc.html" style="font-size:13px;color:#22564b;font-weight:700">ゴルフ場のご相談 →</a></div>
+<div class="gcard" style="background:rgba(255,255,255,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.75);border-radius:24px;padding:34px 30px;box-shadow:0 10px 30px rgba(31,77,64,.1);text-align:center"><div style="width:58px;height:66px;margin:0 auto 18px;background:linear-gradient(135deg,#c9a86e,#b24f7a);display:flex;align-items:center;justify-content:center;font:700 20px 'Shippori Mincho',serif;color:#fff;border-radius:12px;box-shadow:inset 0 2px 8px rgba(255,255,255,.4),0 6px 14px rgba(178,79,122,.28)">02</div><h3 style="font:700 19px 'Shippori Mincho',serif;margin:0 0 12px">イベントキャディ</h3><p style="font-size:13.5px;line-height:1.95;color:#4d5f56;margin:0 0 18px;font-weight:500">契約外のゴルフ場・コンペにも単発で派遣。大切な一日を華やかに彩ります。</p><a href="contact-event.dc.html" style="font-size:13px;color:#b28a52;font-weight:700">イベントのご依頼 →</a></div>
+<div class="gcard" style="background:rgba(255,255,255,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.75);border-radius:24px;padding:34px 30px;box-shadow:0 10px 30px rgba(31,77,64,.1);text-align:center"><div style="width:58px;height:66px;margin:0 auto 18px;background:linear-gradient(135deg,#7a4f9f,#3a5f9f);display:flex;align-items:center;justify-content:center;font:700 20px 'Shippori Mincho',serif;color:#fff;border-radius:12px;box-shadow:inset 0 2px 8px rgba(255,255,255,.35),0 6px 14px rgba(90,79,159,.28)">03</div><h3 style="font:700 19px 'Shippori Mincho',serif;margin:0 0 12px">プレーヤー指名</h3><p style="font-size:13.5px;line-height:1.95;color:#4d5f56;margin:0 0 18px;font-weight:500">プレーヤー様からのご依頼も受付。<b style="color:#1f4d40">※事前にゴルフ場への確認が必須です。</b></p><a href="contact-event.dc.html" style="font-size:13px;color:#22564b;font-weight:700">ご相談はコチラ →</a></div>
+</div>
+</section>
+
+<!-- why (stained glass panel) -->
+<section style="position:relative;overflow:hidden;margin:0 5vw 52px;border-radius:30px;padding:52px 5vw;color:#fff;background:radial-gradient(circle at 22% 30%,rgba(58,143,124,.95),transparent 46%),radial-gradient(circle at 78% 24%,rgba(30,132,150,.9),transparent 48%),radial-gradient(circle at 60% 88%,rgba(178,138,82,.85),transparent 46%),#173b33;box-shadow:0 14px 40px rgba(16,40,34,.25)">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(63deg,rgba(6,16,12,.4) 0 2px,transparent 2px 46px),repeating-linear-gradient(-63deg,rgba(6,16,12,.4) 0 2px,transparent 2px 46px)"></div>
+<div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(16,40,34,.5),rgba(16,40,34,.6))"></div>
+<div style="position:relative;text-align:center;margin-bottom:36px"><div style="font:700 12px 'Shippori Mincho',serif;letter-spacing:.2em;color:#e6cf9c">WHY S-STYLE</div><h2 style="font:700 clamp(24px,3vw,30px) 'Shippori Mincho',serif;margin:8px 0 0">S-Styleが選ばれる理由</h2></div>
+<div class="g3" style="position:relative;display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1000px;margin:0 auto">
+<div style="text-align:center"><div style="font:700 22px 'Shippori Mincho',serif;margin-bottom:8px;color:#e6cf9c">育成品質</div><p style="font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.92);margin:0;font-weight:500">独自基準で磨いたSランクキャディ。マナーも技術も高水準でお届けします。</p></div>
+<div style="text-align:center"><div style="font:700 22px 'Shippori Mincho',serif;margin-bottom:8px;color:#e6cf9c">全国対応</div><p style="font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.92);margin:0;font-weight:500">北海道から沖縄まで8拠点。地域を越えて、必要な時に必要な人材を。</p></div>
+<div style="text-align:center"><div style="font:700 22px 'Shippori Mincho',serif;margin-bottom:8px;color:#e6cf9c">柔軟な派遣</div><p style="font-size:13.5px;line-height:1.95;color:rgba(255,255,255,.92);margin:0;font-weight:500">契約はもちろん、単発・イベントにも対応。急なご相談もお気軽に。</p></div>
+</div>
+</section>
+
+<!-- bases (frosted panel) -->
+<section class="bases-grid" style="margin:0 5vw 52px;background:rgba(255,255,255,.5);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:30px;padding:48px 5vw;display:grid;grid-template-columns:1fr 1.2fr;gap:36px;align-items:center;box-shadow:0 12px 34px rgba(31,77,64,.1)">
+<div><h2 style="font:700 clamp(24px,3vw,28px) 'Shippori Mincho',serif;margin:0 0 12px;color:#1f4d40">全国8拠点のネットワーク</h2><p style="font-size:14px;line-height:1.95;color:#3b5248;margin:0;font-weight:500">本拠点の千葉を中心に、全国7支店。地域に根ざしたネットワークで、最適なキャディをアサインします。</p></div>
+<div class="bases-tags" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+<span style="padding:12px 20px;text-align:center;background:linear-gradient(135deg,#3a8f7c,#1e8ca0);color:#fff;border-radius:999px;font-size:14px;font-weight:700;box-shadow:0 4px 12px rgba(30,132,150,.28)">千葉県</span>
+<span style="padding:12px 20px;text-align:center;background:rgba(255,255,255,.75);border:1px solid rgba(58,143,124,.3);border-radius:999px;font-size:14px;color:#2f4a40;font-weight:700">北海道</span>
+<span style="padding:12px 20px;text-align:center;background:rgba(255,255,255,.75);border:1px solid rgba(58,143,124,.3);border-radius:999px;font-size:14px;color:#2f4a40;font-weight:700">沖縄県</span>
+<span style="padding:12px 20px;text-align:center;background:rgba(255,255,255,.75);border:1px solid rgba(58,143,124,.3);border-radius:999px;font-size:14px;color:#2f4a40;font-weight:700">山梨県</span>
+<span style="padding:12px 20px;text-align:center;background:rgba(255,255,255,.75);border:1px solid rgba(58,143,124,.3);border-radius:999px;font-size:14px;color:#2f4a40;font-weight:700">兵庫県</span>
+<span style="padding:12px 20px;text-align:center;background:rgba(255,255,255,.75);border:1px solid rgba(58,143,124,.3);border-radius:999px;font-size:14px;color:#2f4a40;font-weight:700">大阪府</span>
+<span style="padding:12px 20px;text-align:center;background:rgba(255,255,255,.75);border:1px solid rgba(58,143,124,.3);border-radius:999px;font-size:14px;color:#2f4a40;font-weight:700">埼玉県</span>
+<span style="padding:12px 20px;text-align:center;background:rgba(255,255,255,.75);border:1px solid rgba(58,143,124,.3);border-radius:999px;font-size:14px;color:#2f4a40;font-weight:700">三重県</span>
+</div>
+</section>
+
+<!-- a day (stained glass panel) -->
+<section class="day-grid" style="position:relative;overflow:hidden;margin:0 5vw 52px;border-radius:30px;padding:48px 5vw;display:grid;grid-template-columns:1fr 2fr;gap:34px;align-items:center;color:#fff;background:radial-gradient(circle at 24% 30%,rgba(30,132,150,.92),transparent 48%),radial-gradient(circle at 80% 70%,rgba(110,79,128,.85),transparent 48%),radial-gradient(circle at 60% 12%,rgba(58,143,124,.85),transparent 46%),#173b33;box-shadow:0 14px 40px rgba(16,40,34,.25)">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(63deg,rgba(6,16,12,.4) 0 2px,transparent 2px 46px),repeating-linear-gradient(-63deg,rgba(6,16,12,.4) 0 2px,transparent 2px 46px)"></div>
+<div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(16,40,34,.5),rgba(16,40,34,.58))"></div>
+<div class="day-visual" style="position:relative;display:flex;align-items:center;justify-content:center">
+<img src="assets/bibi-fly.png" alt="BiBi" style="width: 227px; max-width: 280px; height: 213px; filter: drop-shadow(0 10px 22px rgba(0,0,0,.3))">
+</div>
+<div style="position:relative">
+<div style="font:700 12px 'Shippori Mincho',serif;letter-spacing:.2em;color:#e6cf9c">A DAY OF CADDIE</div>
+<h2 style="font:700 clamp(24px,3vw,30px) 'Shippori Mincho',serif;margin:8px 0 14px">キャディの一日</h2>
+<p style="font-size:14.5px;line-height:2;color:rgba(255,255,255,.94);margin:0 0 26px;font-weight:500">早朝の準備からラウンド、次の街への移動まで。BiBiと一緒に、旅するキャディのリアルな一日をご紹介します。未経験の方も、働くイメージがきっと湧きます。</p>
+<a class="btn" href="caddie-day.dc.html" style="display:inline-block;padding:14px 30px;background:#c9a86e;color:#463216;border-radius:999px;font-weight:700;font-size:14px">一日を見る →</a>
+</div>
+</section>
+
+<!-- news (frosted list) -->
+<section style="padding:0 5vw 52px">
+<div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:24px;max-width:1000px;margin-left:auto;margin-right:auto"><h2 style="font:700 24px 'Shippori Mincho',serif;margin:0;color:#1f4d40">お知らせ</h2><a href="blog.dc.html" style="font-size:12.5px;color:#22564b;font-weight:700">お知らせ一覧 →</a></div>
+<div style="max-width:1000px;margin:0 auto;background:rgba(255,255,255,.6);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.75);border-radius:22px;overflow:hidden;box-shadow:0 10px 30px rgba(31,77,64,.1)">
+<a class="gcard news-row" href="article.dc.html" style="display:grid;grid-template-columns:120px 96px 1fr auto;gap:18px;align-items:center;padding:20px 26px;border-bottom:1px solid rgba(31,77,64,.1)"><span style="font-size:13px;color:#8aa89a;font-weight:700;font-family:'Shippori Mincho',serif">2026.06.28</span><span style="text-align:center;padding:5px 0;background:linear-gradient(135deg,#3a8f7c,#1e8ca0);color:#fff;border-radius:999px;font-size:11px;font-weight:700">契約情報</span><span style="font-size:14.5px;font-weight:700;color:#123329;line-height:1.6">〇〇ゴルフ倶楽部との契約がスタートしました</span><span style="font-size:16px;color:#c9a86e">→</span></a>
+<a class="gcard news-row" href="article.dc.html" style="display:grid;grid-template-columns:120px 96px 1fr auto;gap:18px;align-items:center;padding:20px 26px;border-bottom:1px solid rgba(31,77,64,.1)"><span style="font-size:13px;color:#8aa89a;font-weight:700;font-family:'Shippori Mincho',serif">2026.06.15</span><span style="text-align:center;padding:5px 0;background:linear-gradient(135deg,#7a4f9f,#3a5f9f);color:#fff;border-radius:999px;font-size:11px;font-weight:700">サービス</span><span style="font-size:14.5px;font-weight:700;color:#123329;line-height:1.6">キャディ手配サービス「TeeRA」をリリースしました</span><span style="font-size:16px;color:#c9a86e">→</span></a>
+<a class="gcard news-row" href="article.dc.html" style="display:grid;grid-template-columns:120px 96px 1fr auto;gap:18px;align-items:center;padding:20px 26px"><span style="font-size:13px;color:#8aa89a;font-weight:700;font-family:'Shippori Mincho',serif">2026.06.01</span><span style="text-align:center;padding:5px 0;background:linear-gradient(135deg,#c9a86e,#b24f7a);color:#fff;border-radius:999px;font-size:11px;font-weight:700">グッズ</span><span style="font-size:14.5px;font-weight:700;color:#123329;line-height:1.6">BiBiオリジナルグッズの販売を開始しました</span><span style="font-size:16px;color:#c9a86e">→</span></a>
+</div>
+</section>
+
+<!-- contact CTA (stained glass) -->
+<section style="padding:0 5vw 60px">
+<div style="position:relative;overflow:hidden;max-width:1120px;margin:0 auto;border-radius:30px;padding:52px;text-align:center;color:#fff;background:radial-gradient(circle at 20% 24%,rgba(58,143,124,.9),transparent 50%),radial-gradient(circle at 82% 30%,rgba(178,138,82,.85),transparent 48%),radial-gradient(circle at 50% 92%,rgba(30,132,150,.85),transparent 50%),#153229;box-shadow:0 14px 40px rgba(16,40,34,.28)">
+<div style="position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(63deg,rgba(6,16,12,.4) 0 2px,transparent 2px 46px),repeating-linear-gradient(-63deg,rgba(6,16,12,.4) 0 2px,transparent 2px 46px)"></div>
+<div style="position:absolute;inset:0;pointer-events:none;background:linear-gradient(rgba(16,40,34,.5),rgba(16,40,34,.6))"></div>
+<div style="position:relative">
+<h2 style="font:700 clamp(24px,3vw,30px) 'Shippori Mincho',serif;margin:0 0 10px">お問い合わせ</h2>
+<p style="font-size:14px;color:rgba(255,255,255,.92);margin:0 0 30px;font-weight:500">ゴルフ場様・イベントのご依頼はこちらから。採用エントリーもお待ちしています。</p>
+<div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
+<a class="btn" href="contact-course.dc.html" style="padding:15px 30px;background:#fff;color:#1f4d40;border-radius:999px;font-weight:700;font-size:14px">ゴルフ場お問い合わせ</a>
+<a class="btn" href="contact-event.dc.html" style="padding:15px 30px;background:#c9a86e;color:#463216;border-radius:999px;font-weight:700;font-size:14px">イベントキャディ依頼</a>
+<a class="btn" href="recruit.dc.html" style="padding:15px 30px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);color:#fff;border:1.5px solid rgba(255,255,255,.6);border-radius:999px;font-weight:700;font-size:14px">採用エントリー</a>
+</div>
+</div>
+</div>
+</section>
+
+<!-- footer -->
+<footer style="padding:48px 5vw 36px;background:#123329;color:#a9d5c4;border-top:2px solid #c9a86e">
+<div class="footer-grid" style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:30px;max-width:1120px;margin:0 auto">
+<div style="display:flex;flex-direction:column;gap:14px"><div style="display:flex;align-items:center;gap:10px"><img src="assets/bibi-logo.webp" alt="BiBi" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #c9a86e"><div style="font:700 22px 'Shippori Mincho',serif;color:#fff">S-Style</div></div><p style="font-size:12.5px;line-height:1.9;margin:0;max-width:280px;font-weight:500">BiBiと一緒に、旅するキャディという新しい働き方を全国へ。<br>SINCE 2020</p></div>
+<div style="font-size:13px;line-height:2.3;font-weight:500"><div style="color:#c9a86e;font-size:11px;font-weight:700;margin-bottom:8px">会社案内</div><a class="navlink" href="about.dc.html#message">代表挨拶</a><br><a class="navlink" href="about.dc.html#company">会社概要</a><br><a class="navlink" href="caddie-day.dc.html">キャディの一日</a></div>
+<div style="font-size:13px;line-height:2.3;font-weight:500"><div style="color:#c9a86e;font-size:11px;font-weight:700;margin-bottom:8px">サービス・お知らせ</div><a class="navlink" href="event.dc.html">イベントキャディ</a><br><a class="navlink" href="recruit.dc.html">採用情報</a><br><a class="navlink" href="blog.dc.html">お知らせ</a></div>
+<div style="font-size:13px;line-height:2.3;font-weight:500"><div style="color:#c9a86e;font-size:11px;font-weight:700;margin-bottom:8px">お問い合わせ</div><a class="navlink" href="contact-course.dc.html">ゴルフ場様</a><br><a class="navlink" href="contact-event.dc.html">イベントキャディ</a></div>
+</div>
+<div style="text-align:center;margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);font-size:11.5px;color:#6f9d8a">© 2026 株式会社S-Style. All rights reserved.</div>
+</footer>
+
+</div>
+</x-dc>
+</body>
+</html>

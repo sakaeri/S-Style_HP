@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>キャディの一日 ｜ 株式会社S-Style</title>
+<meta name="description" content="S-Styleキャディの一日を、マスコットBiBiと一緒にご紹介。早朝の準備からラウンド、次の街への移動まで。未経験でも働くイメージが湧きます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&family=Shippori+Mincho:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0}a{text-decoration:none;color:inherit}.navlink{transition:opacity .2s}.navlink:hover{opacity:.7}.btn{transition:transform .15s}.btn:hover{transform:translateY(-2px)}
+  @media (max-width:860px){
+    .hdr-nav .navlink{display:none}
+    .g3{grid-template-columns:1fr !important}
+    .g4{grid-template-columns:repeat(2,1fr) !important}
+    .hero-grid{grid-template-columns:1fr !important}
+    .hero-grid .hero-visual{order:-1;margin-bottom:8px}
+    .msg-grid{grid-template-columns:1fr !important}
+    .kv-row{grid-template-columns:120px 1fr !important}
+    .form-row2{grid-template-columns:1fr !important}
+    .news-row{grid-template-columns:1fr !important;gap:6px !important;text-align:left}
+    .footer-grid{grid-template-columns:1fr 1fr !important}
+    .footer-grid > div:first-child{grid-column:1/-1}
+    .base-grid{grid-template-columns:repeat(2,1fr) !important}
+  }
+</style>
+</helmet>
+
+<div style="background:radial-gradient(circle at 14% 8%,#e7f0ec,transparent 42%),radial-gradient(circle at 86% 14%,#f2ecdb,transparent 42%),radial-gradient(circle at 50% 96%,#e6eef0,transparent 46%),#f4f1e8;color:#0d3b2c;font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh">
+
+<header style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 5vw;background:rgba(18,51,41,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:2px solid #c9a86e;box-shadow:0 2px 18px rgba(11,61,44,.25)">
+<a href="index.dc.html" style="display:flex;align-items:center;gap:11px"><img src="assets/bibi-logo.webp" alt="S-Style BiBi" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.6)"><span style="font:700 20px 'Shippori Mincho',serif;color:#fff">S-Style</span></a>
+<nav class="hdr-nav" style="display:flex;align-items:center;gap:26px;font-size:13.5px;color:#eafaf3;font-weight:700">
+<a class="navlink" href="about.dc.html">会社案内</a><a class="navlink" href="caddie-day.dc.html" style="color:#fff;text-decoration:underline;text-underline-offset:6px">キャディの一日</a><a class="navlink" href="event.dc.html">イベントキャディ</a><a class="navlink" href="recruit.dc.html">採用情報</a><a class="navlink" href="blog.dc.html">お知らせ</a>
+<a class="btn" href="contact-course.dc.html" style="padding:11px 22px;background:#c9a86e;color:#463216;border-radius:999px;font-weight:700">お問い合わせ</a>
+</nav>
+</header>
+
+<section style="position:relative;color:#fff;padding:56px 5vw;overflow:hidden;background:repeating-linear-gradient(63deg,rgba(6,16,12,.36) 0 2px,transparent 2px 46px),repeating-linear-gradient(-63deg,rgba(6,16,12,.36) 0 2px,transparent 2px 46px),linear-gradient(rgba(23,59,51,.42),rgba(23,59,51,.54)),radial-gradient(circle at 20% 26%,rgba(58,143,124,.92),transparent 48%),radial-gradient(circle at 80% 22%,rgba(30,132,150,.88),transparent 48%),radial-gradient(circle at 62% 88%,rgba(178,138,82,.8),transparent 48%),#173b33">
+<div style="position:absolute;top:-20px;right:8vw;width:80px;height:92px;background:rgba(255,255,255,.12);border-radius:12px"></div>
+<div style="position:relative;max-width:1120px;margin:0 auto;display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+<div>
+<div style="font:700 12px 'Shippori Mincho',serif;letter-spacing:.25em;color:#c9a86e">A DAY OF CADDIE</div>
+<h1 style="font:700 clamp(28px,3.6vw,42px) 'Shippori Mincho',serif;margin:8px 0 6px">キャディの一日</h1>
+<p style="font-size:14px;color:rgba(255,255,255,.9);margin:0;font-weight:500">BiBiと一緒に、旅するキャディの一日をのぞいてみよう！</p>
+</div>
+</div>
+</section>
+
+<!-- timeline -->
+<section style="max-width:860px;margin:0 auto;padding:64px 5vw">
+<div style="position:relative;padding-left:44px;border-left:3px dashed #9cd7bf;display:flex;flex-direction:column;gap:36px">
+
+<div style="position:relative">
+<div style="position:absolute;left:-58px;top:0;width:52px;height:52px;border-radius:50%;background:#22564b;color:#fff;display:flex;align-items:center;justify-content:center;font:700 13px 'Shippori Mincho',serif;box-shadow:0 0 0 5px #fbf9f0">7:00</div>
+<div style="background:#fff;border-radius:22px;padding:26px 28px;border:1px solid #eceadb;display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center">
+<div style="height:100px;border-radius:14px;overflow:hidden"><img src="assets/caddie-day-commute.jpg" alt="出勤" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+<div><h3 style="font:700 18px 'Shippori Mincho',serif;margin:0 0 8px;color:#1f4d40">出勤</h3><p style="font-size:13.5px;line-height:1.9;color:#4d5f56;margin:0;font-weight:500">早朝に出勤し、身だしなみを整えます。当日のスタート組・コース状況を確認します。</p></div>
+</div>
+</div>
+
+<div style="position:relative">
+<div style="position:absolute;left:-58px;top:0;width:52px;height:52px;border-radius:50%;background:#22564b;color:#fff;display:flex;align-items:center;justify-content:center;font:700 12px 'Shippori Mincho',serif;box-shadow:0 0 0 5px #fbf9f0">7:15</div>
+<div style="background:#fff;border-radius:22px;padding:26px 28px;border:1px solid #eceadb;display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center">
+<div style="height:100px;border-radius:14px;overflow:hidden"><img src="assets/caddie-day-prep.jpg" alt="準備" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+<div><h3 style="font:700 18px 'Shippori Mincho',serif;margin:0 0 8px;color:#1f4d40">準備・お客様をお出迎え</h3><p style="font-size:13.5px;line-height:1.9;color:#4d5f56;margin:0;font-weight:500">キャディバッグやカートの準備を整え、笑顔でプレーヤー様をお出迎えします。</p></div>
+</div>
+</div>
+
+<div style="position:relative">
+<div style="position:absolute;left:-58px;top:0;width:52px;height:52px;border-radius:50%;background:#22564b;color:#fff;display:flex;align-items:center;justify-content:center;font:700 13px 'Shippori Mincho',serif;box-shadow:0 0 0 5px #fbf9f0">8:00</div>
+<div style="background:#fff;border-radius:22px;padding:26px 28px;border:1px solid #eceadb;display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center">
+<div style="height:100px;border-radius:14px;overflow:hidden"><img src="assets/caddie-day-start.jpg" alt="プレースタート" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+<div><h3 style="font:700 18px 'Shippori Mincho',serif;margin:0 0 8px;color:#1f4d40">プレースタート（前半）</h3><p style="font-size:13.5px;line-height:1.9;color:#4d5f56;margin:0;font-weight:500">距離や芝目を読み、最適なクラブをアドバイス。プレーヤーの気持ちに寄り添いながら、スムーズな進行をサポートします。</p></div>
+</div>
+</div>
+
+<div style="position:relative">
+<div style="position:absolute;left:-58px;top:0;width:52px;height:52px;border-radius:50%;background:#b28a52;color:#fff;display:flex;align-items:center;justify-content:center;font:700 11px 'Shippori Mincho',serif;box-shadow:0 0 0 5px #fbf9f0">10:15</div>
+<div style="background:#fff;border-radius:22px;padding:26px 28px;border:1px solid #eceadb;display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center">
+<div style="height:100px;border-radius:14px;overflow:hidden"><img src="assets/caddie-day-lunch.jpg" alt="お昼休憩" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+<div><h3 style="font:700 18px 'Shippori Mincho',serif;margin:0 0 8px;color:#1f4d40">お昼休憩</h3><p style="font-size:13.5px;line-height:1.9;color:#4d5f56;margin:0;font-weight:500">前半のラウンド終了。しっかり休憩をとって、後半に備えます。キャディ同士の情報共有もこの時間に。</p></div>
+</div>
+</div>
+
+<div style="position:relative">
+<div style="position:absolute;left:-58px;top:0;width:52px;height:52px;border-radius:50%;background:#22564b;color:#fff;display:flex;align-items:center;justify-content:center;font:700 13px 'Shippori Mincho',serif;box-shadow:0 0 0 5px #fbf9f0">11:00</div>
+<div style="background:#fff;border-radius:22px;padding:26px 28px;border:1px solid #eceadb;display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center">
+<div style="height:100px;border-radius:14px;overflow:hidden"><img src="assets/caddie-day-back9.jpg" alt="後半プレー" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+<div><h3 style="font:700 18px 'Shippori Mincho',serif;margin:0 0 8px;color:#1f4d40">後半プレー</h3><p style="font-size:13.5px;line-height:1.9;color:#4d5f56;margin:0;font-weight:500">後半もプレーヤーのベストショットを引き出すお手伝い。最後の一打まで、最高の一日になるよう心を尽くします。</p></div>
+</div>
+</div>
+
+<div style="position:relative">
+<div style="position:absolute;left:-58px;top:0;width:52px;height:52px;border-radius:50%;background:#22564b;color:#fff;display:flex;align-items:center;justify-content:center;font:700 11px 'Shippori Mincho',serif;box-shadow:0 0 0 5px #fbf9f0">13:15</div>
+<div style="background:#fff;border-radius:22px;padding:26px 28px;border:1px solid #eceadb;display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center">
+<div style="height:100px;border-radius:14px;overflow:hidden"><img src="assets/caddie-day-cleanup.jpg" alt="片付け" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+<div><h3 style="font:700 18px 'Shippori Mincho',serif;margin:0 0 8px;color:#1f4d40">プレー終了・片付け</h3><p style="font-size:13.5px;line-height:1.9;color:#4d5f56;margin:0;font-weight:500">笑顔でお見送り。カートやクラブを片付け、翌日の準備をします。</p></div>
+</div>
+</div>
+
+<div style="position:relative">
+<div style="position:absolute;left:-58px;top:0;width:52px;height:52px;border-radius:50%;background:#22564b;color:#fff;display:flex;align-items:center;justify-content:center;font:700 13px 'Shippori Mincho',serif;box-shadow:0 0 0 5px #fbf9f0">14:00</div>
+<div style="background:#fff;border-radius:22px;padding:26px 28px;border:1px solid #eceadb;display:grid;grid-template-columns:120px 1fr;gap:22px;align-items:center">
+<div style="height:100px;border-radius:14px;overflow:hidden"><img src="assets/caddie-day-offwork.jpg" alt="退勤後のひととき" style="width:100%;height:100%;object-fit:cover;display:block"></div>
+<div><h3 style="font:700 18px 'Shippori Mincho',serif;margin:0 0 8px;color:#1f4d40">退勤</h3><p style="font-size:13.5px;line-height:1.9;color:#4d5f56;margin:0;font-weight:500">一日の業務を終え、退勤します。実働6時間で、最高の一日を届ける仕事です。</p></div>
+</div>
+</div>
+
+</div>
+</section>
+
+<!-- CTA -->
+<section style="padding:0 5vw 64px">
+<div style="max-width:1000px;margin:0 auto;border-radius:28px;background:repeating-linear-gradient(63deg,rgba(6,16,12,.36) 0 2px,transparent 2px 46px),repeating-linear-gradient(-63deg,rgba(6,16,12,.36) 0 2px,transparent 2px 46px),linear-gradient(rgba(23,59,51,.42),rgba(23,59,51,.54)),radial-gradient(circle at 20% 26%,rgba(58,143,124,.92),transparent 48%),radial-gradient(circle at 80% 22%,rgba(30,132,150,.88),transparent 48%),radial-gradient(circle at 62% 88%,rgba(178,138,82,.8),transparent 48%),#173b33;padding:48px;text-align:center;color:#fff">
+<h2 style="font:700 clamp(22px,2.6vw,28px) 'Shippori Mincho',serif;margin:0 0 10px">こんな一日を、一緒に。</h2>
+<p style="font-size:14px;color:rgba(255,255,255,.9);margin:0 0 26px;font-weight:500">未経験からでも大丈夫。あなたもSランクキャディを目指しませんか？</p>
+<a class="btn" href="recruit.dc.html" style="display:inline-block;padding:15px 34px;background:#c9a86e;color:#463216;border-radius:999px;font-weight:700;font-size:15px">採用情報を見る →</a>
+</div>
+</section>
+
+<footer style="padding:48px 5vw 36px;background:#123329;color:#a9d5c4;border-top:2px solid #c9a86e">
+<div class="footer-grid" style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:30px;max-width:1120px;margin:0 auto">
+<div style="display:flex;flex-direction:column;gap:14px"><div style="display:flex;align-items:center;gap:10px"><img src="assets/bibi-logo.webp" alt="BiBi" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #3a7d68"><div style="font:700 22px 'Shippori Mincho',serif;color:#fff">S-Style</div></div><p style="font-size:12.5px;line-height:1.9;margin:0;max-width:280px;font-weight:500">BiBiと一緒に、旅するキャディという新しい働き方を全国へ。<br>SINCE 2020</p></div>
+<div style="font-size:13px;line-height:2.3;font-weight:500"><div style="color:#c9a86e;font-size:11px;font-weight:700;margin-bottom:8px">会社案内</div><a class="navlink" href="about.dc.html#message">代表挨拶</a><br><a class="navlink" href="about.dc.html#company">会社概要</a><br><a class="navlink" href="caddie-day.dc.html">キャディの一日</a></div>
+<div style="font-size:13px;line-height:2.3;font-weight:500"><div style="color:#c9a86e;font-size:11px;font-weight:700;margin-bottom:8px">サービス・お知らせ</div><a class="navlink" href="event.dc.html">イベントキャディ</a><br><a class="navlink" href="recruit.dc.html">採用情報</a><br><a class="navlink" href="blog.dc.html">お知らせ</a></div>
+<div style="font-size:13px;line-height:2.3;font-weight:500"><div style="color:#c9a86e;font-size:11px;font-weight:700;margin-bottom:8px">お問い合わせ</div><a class="navlink" href="contact-course.dc.html">ゴルフ場様</a><br><a class="navlink" href="contact-event.dc.html">イベントキャディ</a></div>
+</div>
+<div style="text-align:center;margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);font-size:11.5px;color:#6f9d8a">© 2026 株式会社S-Style. All rights reserved.</div>
+</footer>
+
+</div>
+</x-dc>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<title>会社案内 ｜ 株式会社S-Style</title>
+<meta name="description" content="株式会社S-Styleの会社案内。代表挨拶と会社概要をご紹介します。全国8拠点（本拠点：千葉）でSランクキャディの育成・派遣事業を行っています。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700;900&amp;family=Shippori+Mincho:wght@500;600;700;800&amp;family=Alex+Brush&amp;display=swap" rel="stylesheet">
+<script src="image-slot.js"></script>
+<style>body{margin:0}a{text-decoration:none;color:inherit}.navlink{transition:opacity .2s}.navlink:hover{opacity:.7}.btn{transition:transform .15s}.btn:hover{transform:translateY(-2px)}.base-card{cursor:pointer;transition:transform .15s,box-shadow .2s}.base-card:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(14,158,110,.18)}.modal-x:hover{background:#1f4d40 !important;color:#fff !important}
+  @media (max-width:860px){
+    .hdr-nav .navlink{display:none}
+    .g3{grid-template-columns:1fr !important}
+    .g4{grid-template-columns:repeat(2,1fr) !important}
+    .hero-grid{grid-template-columns:1fr !important}
+    .hero-grid .hero-visual{order:-1;margin-bottom:8px}
+    .msg-grid{grid-template-columns:1fr !important}
+    .kv-row{grid-template-columns:120px 1fr !important}
+    .form-row2{grid-template-columns:1fr !important}
+    .news-row{grid-template-columns:1fr !important;gap:6px !important;text-align:left}
+    .footer-grid{grid-template-columns:1fr 1fr !important}
+    .footer-grid > div:first-child{grid-column:1/-1}
+    .base-grid{grid-template-columns:repeat(2,1fr) !important}
+  }
+</style>
+</helmet>
+
+<div style="background:radial-gradient(circle at 14% 8%,#e7f0ec,transparent 42%),radial-gradient(circle at 86% 14%,#f2ecdb,transparent 42%),radial-gradient(circle at 50% 96%,#e6eef0,transparent 46%),#f4f1e8;color:#0d3b2c;font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh">
+
+<header style="position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:14px 5vw;background:rgba(18,51,41,.8);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:2px solid #c9a86e;box-shadow:0 2px 18px rgba(11,61,44,.25)">
+<a href="index.dc.html" style="display:flex;align-items:center;gap:11px"><img src="assets/bibi-logo.webp" alt="S-Style BiBi" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.6)"><span style="font:700 20px 'Shippori Mincho',serif;color:#fff">S-Style</span></a>
+<nav class="hdr-nav" style="display:flex;align-items:center;gap:26px;font-size:13.5px;color:#eafaf3;font-weight:700">
+<a class="navlink" href="about.dc.html" style="color:#fff;text-decoration:underline;text-underline-offset:6px">会社案内</a><a class="navlink" href="caddie-day.dc.html">キャディの一日</a><a class="navlink" href="event.dc.html">イベントキャディ</a><a class="navlink" href="recruit.dc.html">採用情報</a><a class="navlink" href="blog.dc.html">お知らせ</a>
+<a class="btn" href="contact-course.dc.html" style="padding:11px 22px;background:#c9a86e;color:#463216;border-radius:999px;font-weight:700">お問い合わせ</a>
+</nav>
+</header>
+
+<section style="position:relative;color:#fff;padding:56px 5vw;overflow:hidden;background:repeating-linear-gradient(63deg,rgba(6,16,12,.36) 0 2px,transparent 2px 46px),repeating-linear-gradient(-63deg,rgba(6,16,12,.36) 0 2px,transparent 2px 46px),linear-gradient(rgba(23,59,51,.42),rgba(23,59,51,.54)),radial-gradient(circle at 20% 26%,rgba(58,143,124,.92),transparent 48%),radial-gradient(circle at 80% 22%,rgba(30,132,150,.88),transparent 48%),radial-gradient(circle at 62% 88%,rgba(178,138,82,.8),transparent 48%),#173b33">
+<div style="position:absolute;top:-20px;right:8vw;width:80px;height:92px;background:rgba(255,255,255,.12);border-radius:12px"></div>
+<div style="position:relative;max-width:1120px;margin:0 auto">
+<div style="font:700 12px 'Shippori Mincho',serif;letter-spacing:.25em;color:#c9a86e">COMPANY</div>
+<h1 style="font:700 clamp(30px,3.6vw,42px) 'Shippori Mincho',serif;margin:10px 0 0">会社案内</h1>
+<div style="font-size:12.5px;margin-top:14px;color:rgba(255,255,255,.85)"><a href="index.dc.html" style="color:#fff">ホーム</a> ／ 会社案内</div>
+</div>
+</section>
+
+<!-- section nav -->
+<section style="max-width:1000px;margin:0 auto;padding:28px 5vw 0">
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<a href="#message" style="padding:10px 22px;background:#eee9dd;color:#1f4d40;border-radius:999px;font-size:13.5px;font-weight:700">代表挨拶</a>
+<a href="#company" style="padding:10px 22px;background:#fff;border:1px solid #dbe4dd;color:#3b5248;border-radius:999px;font-size:13.5px;font-weight:700">会社概要</a>
+<a href="#bases" style="padding:10px 22px;background:#fff;border:1px solid #dbe4dd;color:#3b5248;border-radius:999px;font-size:13.5px;font-weight:700">拠点一覧</a>
+</div>
+</section>
+
+<!-- MESSAGE -->
+<section id="message" style="max-width:1000px;margin:0 auto;padding:52px 5vw 0;scroll-margin-top:80px">
+<div style="font:700 12px 'Shippori Mincho',serif;letter-spacing:.25em;color:#b28a52">MESSAGE</div>
+<h2 style="font:700 28px 'Shippori Mincho',serif;color:#1f4d40;margin:8px 0 32px">代表挨拶</h2>
+<div class="msg-grid" style="display:grid;grid-template-columns:1.5fr 1fr;gap:24px;align-items:center;margin-bottom:36px">
+<image-slot id="president-photo" src="assets/president-photo.jpg" shape="rounded" radius="26" placeholder="代表者の写真（横長）" style="display:block;width:100%;height:min(42vw,480px)"></image-slot>
+<div style="display:flex;flex-direction:column;align-items:center;gap:8px"><img src="assets/bibi-fly.png" alt="元気なBiBi" style="width: 238px; height: auto; filter: drop-shadow(0 10px 20px rgba(31,77,64,.22))"><span style="font-size:13px;font-weight:700;color:#1f4d40;text-align:center">イメージキャラクター「BiBi」</span></div>
+</div>
+<div style="font-size:15px;line-height:2.2;color:#33463d">
+<p style="font:700 clamp(22px,2.6vw,28px)/1.6 'Shippori Mincho',serif;color:#1f4d40;margin:0 0 28px">ゴルフ場と、プレーヤーと、キャディの笑顔をつなぐ。</p>
+<p style="margin:0 0 22px">数あるゴルフ場の中で、キャディはコースとプレーヤーをつなぐ、なくてはならない存在です。私たち株式会社S-Styleは「旅するキャディ」という新しい働き方を掲げ、全国8拠点からSランクのキャディをお届けしています。</p>
+<p style="margin:0 0 22px">キャディの仕事は、単にバッグを運ぶだけではありません。コースを読み、プレーヤーの気持ちに寄り添い、その一日を最高の思い出に変える。だからこそ私たちは、技術だけでなくマナー・ホスピタリティまでを独自の基準で磨き上げ、自信を持って送り出しています。</p>
+<p style="margin:0 0 22px">契約ゴルフ場様への安定した派遣はもちろん、契約外のコースやコンペへの単発派遣（イベントキャディ）、プレーヤー様からのご指名にも柔軟に対応しています。マスコットの「BiBi」とともに、全国のゴルフシーンをもっと豊かにしていくことが私たちの願いです。</p>
+<p style="margin:0 0 28px">これからも、働くキャディが誇りを持てる会社であり続けること。そして、ゴルフに関わるすべての方の笑顔を増やすこと。その想いを胸に、一歩ずつ歩んでまいります。</p>
+<div style="text-align:right"><span style="font-size: 13px; color: #5d6b5a; width: 111px; height: 9px">代表取締役　<span style="font-size: 18px; color: #123329; font-weight: 500; font-style: normal; font-family: Georgia">榮 恵里香</span></span><br><img src="assets/president-signature.png" alt="Erika Sakae" style="height: 118px; width: 281px"></div>
+</div>
+</section>
+
+<!-- divider -->
+<div style="max-width:1000px;margin:56px auto 0;padding:0 5vw"><div style="height:1px;background:#e4e0d0"></div></div>
+
+<!-- COMPANY -->
+<section id="company" style="max-width:960px;margin:0 auto;padding:32px 5vw 40px;scroll-margin-top:80px">
+<div style="position:relative;overflow:hidden;border-radius:26px;padding:44px;box-shadow:0 16px 44px rgba(16,40,34,.24);background:repeating-linear-gradient(63deg,rgba(6,16,12,.34) 0 2px,transparent 2px 46px),repeating-linear-gradient(-63deg,rgba(6,16,12,.34) 0 2px,transparent 2px 46px),linear-gradient(rgba(23,59,51,.42),rgba(23,59,51,.54)),radial-gradient(circle at 18% 24%,rgba(58,143,124,.9),transparent 48%),radial-gradient(circle at 84% 26%,rgba(30,132,150,.85),transparent 48%),radial-gradient(circle at 60% 92%,rgba(178,138,82,.8),transparent 48%),#173b33">
+<div style="font:700 12px 'Shippori Mincho',serif;letter-spacing:.25em;color:#e6cf9c">COMPANY PROFILE</div>
+<h2 style="font:700 24px 'Shippori Mincho',serif;color:#fff;margin:8px 0 24px">会社概要</h2>
+<div style="background:rgba(255,255,255,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.55);box-shadow:0 10px 30px rgba(16,40,34,.18)">
+<div class="kv-row" style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid rgba(31,77,64,.12)"><div style="padding:20px 24px;background:rgba(34,86,75,.12);font-weight:700;font-size:14px;color:#1f4d40">会社名</div><div style="padding:20px 24px;font-size:14px;font-weight:500;color:#33463d">株式会社S-Style</div></div>
+<div class="kv-row" style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid rgba(31,77,64,.12)"><div style="padding:20px 24px;background:rgba(34,86,75,.12);font-weight:700;font-size:14px;color:#1f4d40">設立</div><div style="padding:20px 24px;font-size:14px;font-weight:500;color:#33463d">2020年12月</div></div>
+<div class="kv-row" style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid rgba(31,77,64,.12)"><div style="padding:20px 24px;background:rgba(34,86,75,.12);font-weight:700;font-size:14px;color:#1f4d40">代表者</div><div style="padding:20px 24px;font-size:14px;font-weight:500;color:#33463d">代表取締役　榮 恵里香</div></div>
+<div class="kv-row" style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid rgba(31,77,64,.12)"><div style="padding:20px 24px;background:rgba(34,86,75,.12);font-weight:700;font-size:14px;color:#1f4d40">事業内容</div><div style="padding:20px 24px;font-size:14px;font-weight:500;line-height:1.9;color:#33463d">キャディの育成および派遣事業<br>イベントキャディの派遣<br>ゴルフ関連サービス</div></div>
+<div class="kv-row" style="display:grid;grid-template-columns:200px 1fr;border-bottom:1px solid rgba(31,77,64,.12)"><div style="padding:20px 24px;background:rgba(34,86,75,.12);font-weight:700;font-size:14px;color:#1f4d40">所在地</div><div style="padding:20px 24px;font-size:14px;font-weight:500;color:#33463d">千葉県香取市山倉3055-2</div></div>
+<div class="kv-row" style="display:grid;grid-template-columns:200px 1fr"><div style="padding:20px 24px;background:rgba(34,86,75,.12);font-weight:700;font-size:14px;color:#1f4d40">拠点数</div><div style="padding:20px 24px;font-size:14px;font-weight:500;color:#33463d">全国8拠点（本拠点＋7支部）</div></div>
+</div>
+</div>
+</section>
+
+<!-- BASES -->
+<dc-import name="ContractBases" hint-size="100%,640px"></dc-import>
+
+<footer style="padding:48px 5vw 36px;background:#123329;color:#a9d5c4;border-top:2px solid #c9a86e">
+<div class="footer-grid" style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:30px;max-width:1120px;margin:0 auto">
+<div style="display:flex;flex-direction:column;gap:14px"><div style="display:flex;align-items:center;gap:10px"><img src="assets/bibi-logo.webp" alt="BiBi" style="width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid #3a7d68"><div style="font:700 22px 'Shippori Mincho',serif;color:#fff">S-Style</div></div><p style="font-size:12.5px;line-height:1.9;margin:0;max-width:280px;font-weight:500">BiBiと一緒に、旅するキャディという新しい働き方を全国へ。<br>SINCE 2020</p></div>
+<div style="font-size:13px;line-height:2.3;font-weight:500"><div style="color:#c9a86e;font-size:11px;font-weight:700;margin-bottom:8px">会社案内</div><a class="navlink" href="about.dc.html#message">代表挨拶</a><br><a class="navlink" href="about.dc.html#company">会社概要</a><br><a class="navlink" href="caddie-day.dc.html">キャディの一日</a></div>
+<div style="font-size:13px;line-height:2.3;font-weight:500"><div style="color:#c9a86e;font-size:11px;font-weight:700;margin-bottom:8px">サービス・お知らせ</div><a class="navlink" href="event.dc.html">イベントキャディ</a><br><a class="navlink" href="recruit.dc.html">採用情報</a><br><a class="navlink" href="blog.dc.html">お知らせ</a></div>
+<div style="font-size:13px;line-height:2.3;font-weight:500"><div style="color:#c9a86e;font-size:11px;font-weight:700;margin-bottom:8px">お問い合わせ</div><a class="navlink" href="contact-course.dc.html">ゴルフ場様</a><br><a class="navlink" href="contact-event.dc.html">イベントキャディ</a></div>
+</div>
+<div style="text-align:center;margin-top:36px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);font-size:11.5px;color:#6f9d8a">© 2026 株式会社S-Style. All rights reserved.</div>
+</footer>
+
+</div>
+</x-dc>
+</body>
+</html>
