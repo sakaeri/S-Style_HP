@@ -65,13 +65,17 @@ export async function POST(req: NextRequest) {
     const summary = Object.entries(sanitized)
       .map(([key, value]) => `${key}: ${value}`)
       .join("\n");
-    sendMail({
-      to: recipient,
-      subject: `【S-Style】${TYPE_LABEL[inquiryType]}が届きました`,
-      text: `サイトから新しいお問い合わせがありました。\n\n${summary}\n\n管理画面: /admin`,
-    }).catch((err) => {
+    try {
+      // Awaited deliberately: on serverless, work left running after the
+      // response is sent can be frozen before it completes.
+      await sendMail({
+        to: recipient,
+        subject: `【S-Style】${TYPE_LABEL[inquiryType]}が届きました`,
+        text: `サイトから新しいお問い合わせがありました。\n\n${summary}\n\n管理画面: /admin`,
+      });
+    } catch (err) {
       console.error("お問い合わせ通知メールの送信に失敗しました", err);
-    });
+    }
   }
 
   return NextResponse.json({ ok: true, id: inquiry.id }, { status: 201 });
