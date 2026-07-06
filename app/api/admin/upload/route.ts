@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { promises as fs } from "fs";
 import path from "path";
+import { put } from "@vercel/blob";
 import { ADMIN_COOKIE, isAuthorized } from "@/lib/auth";
 
 const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "news");
@@ -29,9 +30,16 @@ export async function POST(req: NextRequest) {
   const safeExt = /^\.[a-zA-Z0-9]+$/.test(ext) ? ext : ".jpg";
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${safeExt}`;
 
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    const blob = await put(`news/${filename}`, file, {
+      access: "public",
+      contentType: file.type,
+    });
+    return NextResponse.json({ url: blob.url });
+  }
+
   await fs.mkdir(UPLOAD_DIR, { recursive: true });
   const buffer = Buffer.from(await file.arrayBuffer());
   await fs.writeFile(path.join(UPLOAD_DIR, filename), buffer);
-
   return NextResponse.json({ url: `/uploads/news/${filename}` });
 }
