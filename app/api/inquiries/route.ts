@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { addInquiry, type InquiryType } from "@/lib/inquiries";
+import { getSettings } from "@/lib/settings";
+import { sendMail } from "@/lib/mailer";
 
 const VALID_TYPES: InquiryType[] = ["course", "event", "recruit"];
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -8,6 +10,12 @@ const REQUIRED_FIELDS: Record<InquiryType, string[]> = {
   course: ["courseName", "contactName", "email", "topic"],
   event: ["requestType", "name", "email", "confirmed"],
   recruit: ["name", "email", "agree"],
+};
+
+const TYPE_LABEL: Record<InquiryType, string> = {
+  course: "ゴルフ場お問い合わせ",
+  event: "イベント／プレーヤー様お問い合わせ",
+  recruit: "採用エントリー",
 };
 
 export async function POST(req: NextRequest) {
@@ -50,5 +58,21 @@ export async function POST(req: NextRequest) {
   }
 
   const inquiry = await addInquiry(inquiryType, sanitized);
+
+  const settings = await getSettings();
+  const recipient = settings.recipients[inquiryType];
+  if (recipient) {
+    const summary = Object.entries(sanitized)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join("\n");
+    sendMail({
+      to: recipient,
+      subject: `【S-Style】${TYPE_LABEL[inquiryType]}が届きました`,
+      text: `サイトから新しいお問い合わせがありました。\n\n${summary}\n\n管理画面: /admin`,
+    }).catch((err) => {
+      console.error("お問い合わせ通知メールの送信に失敗しました", err);
+    });
+  }
+
   return NextResponse.json({ ok: true, id: inquiry.id }, { status: 201 });
 }
