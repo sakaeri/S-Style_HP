@@ -1,0 +1,531 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import type { NewsPost, NewsCategory } from "@/lib/news";
+import type { Inquiry, InquiryType } from "@/lib/inquiries";
+import type { SiteSettings } from "@/lib/settings";
+
+const CATEGORIES: NewsCategory[] = ["お知らせ", "契約情報", "サービス", "グッズ", "イベント"];
+
+const INQUIRY_LABEL: Record<InquiryType, string> = {
+  course: "ゴルフ場お問い合わせ",
+  event: "イベント／プレーヤー様",
+  recruit: "採用エントリー",
+};
+
+const FIELD_LABEL: Record<string, string> = {
+  courseName: "ゴルフ場名",
+  contactName: "ご担当者名",
+  phone: "電話番号",
+  email: "メールアドレス",
+  topic: "ご相談内容",
+  details: "詳細",
+  agree: "個人情報同意",
+  requestType: "ご依頼の種類",
+  name: "お名前",
+  desiredDate: "ご希望日",
+  confirmed: "事前確認済み",
+  kana: "フリガナ",
+  location: "希望勤務地",
+  experience: "キャディ経験",
+  message: "メッセージ",
+};
+
+type Tab = "news" | "inquiries" | "settings";
+
+const wrapStyle: React.CSSProperties = {
+  minHeight: "100vh",
+  background: "#f4f1e8",
+  fontFamily: "var(--font-gothic)",
+  color: "#123329",
+};
+
+const cardStyle: React.CSSProperties = {
+  background: "#fff",
+  borderRadius: 20,
+  padding: 28,
+  border: "1px solid #eceadb",
+  marginBottom: 20,
+};
+
+const inputStyle: React.CSSProperties = {
+  padding: "11px 13px",
+  border: "1.5px solid #dbe4dd",
+  borderRadius: 10,
+  fontSize: 14,
+  width: "100%",
+  boxSizing: "border-box",
+};
+
+const btnPrimary: React.CSSProperties = {
+  padding: "11px 22px",
+  background: "#22564b",
+  color: "#fff",
+  border: "none",
+  borderRadius: 999,
+  fontWeight: 700,
+  fontSize: 13.5,
+  cursor: "pointer",
+};
+
+const btnGhost: React.CSSProperties = {
+  padding: "10px 18px",
+  background: "#eee9dd",
+  color: "#1f4d40",
+  border: "none",
+  borderRadius: 999,
+  fontWeight: 700,
+  fontSize: 13,
+  cursor: "pointer",
+};
+
+const btnDanger: React.CSSProperties = {
+  padding: "10px 18px",
+  background: "#fbeceb",
+  color: "#c0392b",
+  border: "none",
+  borderRadius: 999,
+  fontWeight: 700,
+  fontSize: 13,
+  cursor: "pointer",
+};
+
+interface NewsDraft {
+  slug: string;
+  title: string;
+  category: NewsCategory;
+  date: string;
+  eyecatch: string | null;
+  bodyText: string;
+}
+
+function emptyDraft(): NewsDraft {
+  return { slug: "", title: "", category: "お知らせ", date: "", eyecatch: null, bodyText: "" };
+}
+
+function toDraft(post: NewsPost): NewsDraft {
+  return {
+    slug: post.slug,
+    title: post.title,
+    category: post.category,
+    date: post.date,
+    eyecatch: post.eyecatch,
+    bodyText: post.body.join("\n\n"),
+  };
+}
+
+function slugify(input: string): string {
+  return (
+    input
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || `news-${Date.now()}`
+  );
+}
+
+export default function AdminDashboard({
+  initialNews,
+  initialInquiries,
+  initialSettings,
+  usingDefaultPassword,
+}: {
+  initialNews: NewsPost[];
+  initialInquiries: Inquiry[];
+  initialSettings: SiteSettings;
+  usingDefaultPassword: boolean;
+}) {
+  const router = useRouter();
+  const [tab, setTab] = useState<Tab>("news");
+  const [news, setNews] = useState(initialNews);
+  const [inquiries] = useState(initialInquiries);
+  const [settings, setSettings] = useState(initialSettings);
+
+  const [editingSlug, setEditingSlug] = useState<string | null>(null);
+  const [draft, setDraft] = useState<NewsDraft | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [saveError, setSaveError] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  const [settingsSaving, setSettingsSaving] = useState(false);
+  const [settingsSaved, setSettingsSaved] = useState(false);
+
+  async function handleLogout() {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.replace("/admin/login");
+    router.refresh();
+  }
+
+  function startNew() {
+    setEditingSlug("__new__");
+    setDraft(emptyDraft());
+    setSaveError("");
+  }
+
+  function startEdit(post: NewsPost) {
+    setEditingSlug(post.slug);
+    setDraft(toDraft(post));
+    setSaveError("");
+  }
+
+  function cancelEdit() {
+    setEditingSlug(null);
+    setDraft(null);
+    setSaveError("");
+  }
+
+  async function handleUpload(file: File) {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error || "アップロードに失敗しました");
+      setDraft((d) => (d ? { ...d, eyecatch: body.url } : d));
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "アップロードに失敗しました");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  async function handleSave() {
+    if (!draft) return;
+    setSaving(true);
+    setSaveError("");
+
+    const isNew = editingSlug === "__new__";
+    const slug = isNew ? slugify(draft.slug || draft.title) : draft.slug;
+    const body = draft.bodyText
+      .split(/\n\s*\n/)
+      .map((p) => p.trim())
+      .filter(Boolean);
+
+    const payload = {
+      slug,
+      title: draft.title,
+      category: draft.category,
+      date: draft.date,
+      eyecatch: draft.eyecatch,
+      body,
+    };
+
+    try {
+      const res = await fetch(isNew ? "/api/admin/news" : `/api/admin/news/${draft.slug}`, {
+        method: isNew ? "POST" : "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "保存に失敗しました");
+
+      setNews((prev) => {
+        if (isNew) return [result, ...prev];
+        return prev.map((p) => (p.slug === draft.slug ? result : p));
+      });
+      cancelEdit();
+    } catch (err) {
+      setSaveError(err instanceof Error ? err.message : "保存に失敗しました");
+    } finally {
+      setSaving(false);
+    }
+  }
+
+  async function handleDelete(slug: string) {
+    if (!confirm("このお知らせを削除しますか？")) return;
+    const res = await fetch(`/api/admin/news/${slug}`, { method: "DELETE" });
+    if (res.ok) {
+      setNews((prev) => prev.filter((p) => p.slug !== slug));
+    }
+  }
+
+  async function handleSettingsSave() {
+    setSettingsSaving(true);
+    setSettingsSaved(false);
+    try {
+      const res = await fetch("/api/admin/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings.recipients),
+      });
+      const result = await res.json();
+      if (res.ok) {
+        setSettings(result);
+        setSettingsSaved(true);
+      }
+    } finally {
+      setSettingsSaving(false);
+    }
+  }
+
+  return (
+    <div style={wrapStyle}>
+      <header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "16px 5vw",
+          background: "#123329",
+          color: "#fff",
+        }}
+      >
+        <div style={{ font: "700 18px 'Shippori Mincho', serif" }}>S-Style 管理ダッシュボード</div>
+        <button onClick={handleLogout} style={{ ...btnGhost, background: "rgba(255,255,255,.15)", color: "#fff" }}>
+          ログアウト
+        </button>
+      </header>
+
+      <div style={{ maxWidth: 960, margin: "0 auto", padding: "28px 5vw 80px" }}>
+        {usingDefaultPassword && (
+          <div
+            style={{
+              background: "#f6efe1",
+              border: "1.5px solid #c9a86e",
+              borderRadius: 14,
+              padding: "14px 18px",
+              marginBottom: 20,
+              fontSize: 13,
+              color: "#6d5528",
+              fontWeight: 700,
+            }}
+          >
+            現在デフォルトのパスワードで運用中です。本番公開前に環境変数 ADMIN_PASSWORD
+            を設定して、必ず変更してください。
+          </div>
+        )}
+
+        <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
+          {(
+            [
+              ["news", "お知らせ"],
+              ["inquiries", "お問い合わせ"],
+              ["settings", "送信先設定"],
+            ] as [Tab, string][]
+          ).map(([key, label]) => (
+            <button
+              key={key}
+              onClick={() => setTab(key)}
+              style={tab === key ? btnPrimary : btnGhost}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {tab === "news" && (
+          <div>
+            {!editingSlug && (
+              <button style={{ ...btnPrimary, marginBottom: 20 }} onClick={startNew}>
+                + 新しいお知らせ
+              </button>
+            )}
+
+            {editingSlug && draft && (
+              <div style={cardStyle}>
+                <h2 style={{ font: "700 17px 'Shippori Mincho', serif", margin: "0 0 18px", color: "#1f4d40" }}>
+                  {editingSlug === "__new__" ? "新しいお知らせ" : "お知らせを編集"}
+                </h2>
+                <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                  <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                    タイトル
+                    <input
+                      style={inputStyle}
+                      value={draft.title}
+                      onChange={(e) => setDraft({ ...draft, title: e.target.value })}
+                    />
+                  </label>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+                    <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                      カテゴリ
+                      <select
+                        style={inputStyle}
+                        value={draft.category}
+                        onChange={(e) => setDraft({ ...draft, category: e.target.value as NewsCategory })}
+                      >
+                        {CATEGORIES.map((c) => (
+                          <option key={c} value={c}>
+                            {c}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
+                    <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                      日付（例: 2026.07.06）
+                      <input
+                        style={inputStyle}
+                        value={draft.date}
+                        onChange={(e) => setDraft({ ...draft, date: e.target.value })}
+                      />
+                    </label>
+                  </div>
+                  {editingSlug === "__new__" && (
+                    <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                      URL用スラッグ（空欄でタイトルから自動生成／半角英数とハイフンのみ）
+                      <input
+                        style={inputStyle}
+                        value={draft.slug}
+                        onChange={(e) => setDraft({ ...draft, slug: e.target.value })}
+                        placeholder="例: new-course-contract"
+                      />
+                    </label>
+                  )}
+                  <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                    アイキャッチ画像
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) handleUpload(file);
+                      }}
+                      style={{ display: "block", marginTop: 6, fontSize: 13 }}
+                    />
+                  </label>
+                  {uploading && <span style={{ fontSize: 12.5, color: "#5d6b5a" }}>アップロード中…</span>}
+                  {draft.eyecatch && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={draft.eyecatch}
+                      alt="アイキャッチプレビュー"
+                      style={{ width: "100%", maxWidth: 320, borderRadius: 14 }}
+                    />
+                  )}
+                  <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                    本文（段落は空行で区切ってください）
+                    <textarea
+                      rows={8}
+                      style={{ ...inputStyle, resize: "vertical" }}
+                      value={draft.bodyText}
+                      onChange={(e) => setDraft({ ...draft, bodyText: e.target.value })}
+                    />
+                  </label>
+                  {saveError && <p style={{ color: "#dc4c3e", fontSize: 13, fontWeight: 700, margin: 0 }}>{saveError}</p>}
+                  <div style={{ display: "flex", gap: 10 }}>
+                    <button style={btnPrimary} onClick={handleSave} disabled={saving}>
+                      {saving ? "保存中…" : "保存する"}
+                    </button>
+                    <button style={btnGhost} onClick={cancelEdit}>
+                      キャンセル
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {news.map((post) => (
+              <div key={post.slug} style={{ ...cardStyle, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16 }}>
+                <div>
+                  <div style={{ fontSize: 12, color: "#8aa89a", fontWeight: 700 }}>
+                    {post.date} ／ {post.category}
+                  </div>
+                  <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>{post.title}</div>
+                </div>
+                <div style={{ display: "flex", gap: 8, flex: "none" }}>
+                  <button style={btnGhost} onClick={() => startEdit(post)}>
+                    編集
+                  </button>
+                  <button style={btnDanger} onClick={() => handleDelete(post.slug)}>
+                    削除
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === "inquiries" && (
+          <div>
+            {inquiries.length === 0 && (
+              <div style={cardStyle}>
+                <p style={{ margin: 0, fontSize: 14, color: "#5d6b5a" }}>まだお問い合わせはありません。</p>
+              </div>
+            )}
+            {inquiries.map((inq) => (
+              <div key={inq.id} style={cardStyle}>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
+                  <span
+                    style={{
+                      fontSize: 11.5,
+                      fontWeight: 700,
+                      color: "#fff",
+                      background: "#22564b",
+                      padding: "4px 12px",
+                      borderRadius: 999,
+                    }}
+                  >
+                    {INQUIRY_LABEL[inq.type]}
+                  </span>
+                  <span style={{ fontSize: 12, color: "#8aa89a", fontWeight: 700 }}>
+                    {new Date(inq.createdAt).toLocaleString("ja-JP")}
+                  </span>
+                </div>
+                <div style={{ fontSize: 13.5, lineHeight: 1.9 }}>
+                  {Object.entries(inq.fields).map(([key, value]) => (
+                    <div key={key}>
+                      <b>{FIELD_LABEL[key] ?? key}：</b>
+                      {value === "true" ? "はい" : value}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {tab === "settings" && (
+          <div style={cardStyle}>
+            <h2 style={{ font: "700 17px 'Shippori Mincho', serif", margin: "0 0 6px", color: "#1f4d40" }}>
+              お問い合わせ送信先の設定
+            </h2>
+            <p style={{ fontSize: 12.5, color: "#5d6b5a", margin: "0 0 18px" }}>
+              ここで登録したアドレスは現在ダッシュボードでの管理用に保存されます。フォーム送信時に自動でメール通知するには、別途メール送信サービスとの連携が必要です。
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                ゴルフ場お問い合わせの送信先
+                <input
+                  style={inputStyle}
+                  value={settings.recipients.course}
+                  onChange={(e) =>
+                    setSettings({ recipients: { ...settings.recipients, course: e.target.value } })
+                  }
+                  placeholder="course@example.com"
+                />
+              </label>
+              <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                イベント／プレーヤー様お問い合わせの送信先
+                <input
+                  style={inputStyle}
+                  value={settings.recipients.event}
+                  onChange={(e) =>
+                    setSettings({ recipients: { ...settings.recipients, event: e.target.value } })
+                  }
+                  placeholder="event@example.com"
+                />
+              </label>
+              <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                採用エントリーの送信先
+                <input
+                  style={inputStyle}
+                  value={settings.recipients.recruit}
+                  onChange={(e) =>
+                    setSettings({ recipients: { ...settings.recipients, recruit: e.target.value } })
+                  }
+                  placeholder="recruit@example.com"
+                />
+              </label>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <button style={btnPrimary} onClick={handleSettingsSave} disabled={settingsSaving}>
+                  {settingsSaving ? "保存中…" : "保存する"}
+                </button>
+                {settingsSaved && <span style={{ fontSize: 12.5, color: "#22564b", fontWeight: 700 }}>保存しました</span>}
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
