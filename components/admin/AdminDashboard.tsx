@@ -166,6 +166,15 @@ function slugify(input: string): string {
   );
 }
 
+function senderSummary(inq: Inquiry): string {
+  if (inq.type === "course") {
+    const course = inq.fields.courseName || "";
+    const contact = inq.fields.contactName || "";
+    return [course, contact].filter(Boolean).join(" ／ ") || "（不明）";
+  }
+  return inq.fields.name || "（不明）";
+}
+
 async function uploadImage(file: File, folder: "news" | "president"): Promise<string> {
   const formData = new FormData();
   formData.append("file", file);
@@ -193,6 +202,7 @@ export default function AdminDashboard({
   const [tab, setTab] = useState<Tab>("news");
   const [news, setNews] = useState(initialNews);
   const [inquiries] = useState(initialInquiries);
+  const [expandedInquiries, setExpandedInquiries] = useState<Set<string>>(new Set());
   const [settings, setSettings] = useState(initialSettings);
   const [bases, setBases] = useState(initialBases);
 
@@ -656,35 +666,79 @@ export default function AdminDashboard({
                 <p style={{ margin: 0, fontSize: 14, color: "#5d6b5a" }}>まだお問い合わせはありません。</p>
               </div>
             )}
-            {inquiries.map((inq) => (
-              <div key={inq.id} style={cardStyle}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-                  <span
+            {inquiries.map((inq) => {
+              const isOpen = expandedInquiries.has(inq.id);
+              return (
+                <div key={inq.id} style={{ ...cardStyle, padding: 0, overflow: "hidden" }}>
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() =>
+                      setExpandedInquiries((prev) => {
+                        const next = new Set(prev);
+                        if (next.has(inq.id)) next.delete(inq.id);
+                        else next.add(inq.id);
+                        return next;
+                      })
+                    }
                     style={{
-                      fontSize: 11.5,
-                      fontWeight: 700,
-                      color: "#fff",
-                      background: "#22564b",
-                      padding: "4px 12px",
-                      borderRadius: 999,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      gap: 12,
+                      padding: "16px 20px",
+                      cursor: "pointer",
                     }}
                   >
-                    {INQUIRY_LABEL[inq.type]}
-                  </span>
-                  <span style={{ fontSize: 12, color: "#8aa89a", fontWeight: 700 }}>
-                    {new Date(inq.createdAt).toLocaleString("ja-JP")}
-                  </span>
-                </div>
-                <div style={{ fontSize: 13.5, lineHeight: 1.9 }}>
-                  {Object.entries(inq.fields).map(([key, value]) => (
-                    <div key={key}>
-                      <b>{FIELD_LABEL[key] ?? key}：</b>
-                      {value === "true" ? "はい" : value}
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 0 }}>
+                      <span
+                        style={{
+                          flex: "none",
+                          fontSize: 11.5,
+                          fontWeight: 700,
+                          color: "#fff",
+                          background: "#22564b",
+                          padding: "4px 12px",
+                          borderRadius: 999,
+                        }}
+                      >
+                        {INQUIRY_LABEL[inq.type]}
+                      </span>
+                      <span
+                        style={{
+                          fontSize: 14,
+                          fontWeight: 700,
+                          color: "#123329",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                        }}
+                      >
+                        {senderSummary(inq)}
+                      </span>
                     </div>
-                  ))}
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, flex: "none" }}>
+                      <span style={{ fontSize: 12, color: "#8aa89a", fontWeight: 700 }}>
+                        {new Date(inq.createdAt).toLocaleString("ja-JP")}
+                      </span>
+                      <span style={{ fontSize: 12, color: "#8aa89a" }}>{isOpen ? "▲" : "▼"}</span>
+                    </div>
+                  </div>
+                  {isOpen && (
+                    <div style={{ padding: "0 20px 18px", fontSize: 13.5, lineHeight: 1.9, borderTop: "1px solid #eceadb" }}>
+                      <div style={{ paddingTop: 14 }}>
+                        {Object.entries(inq.fields).map(([key, value]) => (
+                          <div key={key}>
+                            <b>{FIELD_LABEL[key] ?? key}：</b>
+                            {value === "true" ? "はい" : value}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
