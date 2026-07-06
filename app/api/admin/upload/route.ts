@@ -5,7 +5,7 @@ import { put } from "@vercel/blob";
 import { ADMIN_COOKIE, isAuthorized } from "@/lib/auth";
 
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-const MAX_SIZE = 8 * 1024 * 1024;
+const MAX_SIZE = 4 * 1024 * 1024;
 const ALLOWED_FOLDERS = ["news", "president"];
 
 export async function POST(req: NextRequest) {
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "対応していない画像形式です（jpg/png/webp/gif）" }, { status: 400 });
   }
   if (file.size > MAX_SIZE) {
-    return NextResponse.json({ error: "ファイルサイズが大きすぎます（8MBまで）" }, { status: 400 });
+    return NextResponse.json({ error: "ファイルサイズが大きすぎます（4MBまで）" }, { status: 400 });
   }
 
   const ext = path.extname(file.name) || ".jpg";

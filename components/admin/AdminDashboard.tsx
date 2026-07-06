@@ -175,14 +175,28 @@ function senderSummary(inq: Inquiry): string {
   return inq.fields.name || "（不明）";
 }
 
+const MAX_UPLOAD_SIZE = 4 * 1024 * 1024;
+
 async function uploadImage(file: File, folder: "news" | "president"): Promise<string> {
+  if (file.size > MAX_UPLOAD_SIZE) {
+    throw new Error("画像サイズが大きすぎます（4MBまで）。写真アプリなどで縮小してから再度お試しください。");
+  }
+
   const formData = new FormData();
   formData.append("file", file);
   formData.append("folder", folder);
   const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
-  const body = await res.json();
-  if (!res.ok) throw new Error(body.error || "アップロードに失敗しました");
-  return body.url as string;
+
+  let body: { url?: string; error?: string };
+  try {
+    body = await res.json();
+  } catch {
+    throw new Error(
+      res.ok ? "アップロードに失敗しました" : `アップロードに失敗しました（サーバーエラー: ${res.status}）`
+    );
+  }
+  if (!res.ok || !body.url) throw new Error(body.error || "アップロードに失敗しました");
+  return body.url;
 }
 
 export default function AdminDashboard({
@@ -215,6 +229,7 @@ export default function AdminDashboard({
   const [settingsSaving, setSettingsSaving] = useState(false);
   const [settingsSaved, setSettingsSaved] = useState(false);
   const [photoUploading, setPhotoUploading] = useState(false);
+  const [photoError, setPhotoError] = useState("");
 
   const [basesSaving, setBasesSaving] = useState(false);
   const [basesSaved, setBasesSaved] = useState(false);
@@ -327,11 +342,12 @@ export default function AdminDashboard({
 
   async function handlePresidentPhotoUpload(file: File) {
     setPhotoUploading(true);
+    setPhotoError("");
     try {
       const url = await uploadImage(file, "president");
       setSettings((s) => ({ ...s, presidentPhoto: url }));
-    } catch {
-      // surfaced implicitly by the photo not updating; settings save will retry
+    } catch (err) {
+      setPhotoError(err instanceof Error ? err.message : "アップロードに失敗しました");
     } finally {
       setPhotoUploading(false);
     }
@@ -759,6 +775,7 @@ export default function AdminDashboard({
                   style={{ width: "100%", maxWidth: 360, borderRadius: 14, objectFit: "cover" }}
                 />
                 <UploadButton label="写真を変更する" uploading={photoUploading} onSelect={handlePresidentPhotoUpload} />
+                {photoError && <p style={{ color: "#dc4c3e", fontSize: 13, fontWeight: 700, margin: 0 }}>{photoError}</p>}
               </div>
             </div>
 
