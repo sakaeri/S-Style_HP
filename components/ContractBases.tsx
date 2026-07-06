@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { bases } from "@/data/bases";
+import type { Base } from "@/lib/bases";
 
-export default function ContractBases() {
+export default function ContractBases({ bases }: { bases: Base[] }) {
   const [openIdx, setOpenIdx] = useState<number | null>(null);
   const selected = openIdx == null ? null : bases[openIdx];
 
@@ -24,7 +24,7 @@ export default function ContractBases() {
         style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14 }}
       >
         {bases.map((base, i) => {
-          const active = i === 0;
+          const active = base.role === "本拠点";
           return (
             <div
               key={base.name}

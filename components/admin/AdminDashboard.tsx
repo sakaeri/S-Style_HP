@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import type { NewsPost, NewsCategory } from "@/lib/news";
 import type { Inquiry, InquiryType } from "@/lib/inquiries";
 import type { SiteSettings } from "@/lib/settings";
+import type { Base } from "@/lib/bases";
 
 const CATEGORIES: NewsCategory[] = ["お知らせ", "契約情報", "サービス", "グッズ", "イベント"];
 
@@ -32,7 +33,7 @@ const FIELD_LABEL: Record<string, string> = {
   message: "メッセージ",
 };
 
-type Tab = "news" | "inquiries" | "settings";
+type Tab = "news" | "bases" | "inquiries" | "settings";
 
 const wrapStyle: React.CSSProperties = {
   minHeight: "100vh",
@@ -91,6 +92,47 @@ const btnDanger: React.CSSProperties = {
   cursor: "pointer",
 };
 
+const uploadBtnStyle: React.CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 8,
+  padding: "12px 22px",
+  background: "#22564b",
+  color: "#fff",
+  borderRadius: 999,
+  fontWeight: 700,
+  fontSize: 13.5,
+  cursor: "pointer",
+  width: "fit-content",
+};
+
+function UploadButton({
+  label,
+  uploading,
+  onSelect,
+}: {
+  label: string;
+  uploading: boolean;
+  onSelect: (file: File) => void;
+}) {
+  return (
+    <label style={{ ...uploadBtnStyle, opacity: uploading ? 0.6 : 1 }}>
+      {uploading ? "アップロード中…" : label}
+      <input
+        type="file"
+        accept="image/*"
+        disabled={uploading}
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          if (file) onSelect(file);
+          e.target.value = "";
+        }}
+        style={{ display: "none" }}
+      />
+    </label>
+  );
+}
+
 interface NewsDraft {
   slug: string;
   title: string;
@@ -124,15 +166,27 @@ function slugify(input: string): string {
   );
 }
 
+async function uploadImage(file: File, folder: "news" | "president"): Promise<string> {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("folder", folder);
+  const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
+  const body = await res.json();
+  if (!res.ok) throw new Error(body.error || "アップロードに失敗しました");
+  return body.url as string;
+}
+
 export default function AdminDashboard({
   initialNews,
   initialInquiries,
   initialSettings,
+  initialBases,
   usingDefaultPassword,
 }: {
   initialNews: NewsPost[];
   initialInquiries: Inquiry[];
   initialSettings: SiteSettings;
+  initialBases: Base[];
   usingDefaultPassword: boolean;
 }) {
   const router = useRouter();
@@ -140,6 +194,7 @@ export default function AdminDashboard({
   const [news, setNews] = useState(initialNews);
   const [inquiries] = useState(initialInquiries);
   const [settings, setSettings] = useState(initialSettings);
+  const [bases, setBases] = useState(initialBases);
 
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
   const [draft, setDraft] = useState<NewsDraft | null>(null);
@@ -149,6 +204,11 @@ export default function AdminDashboard({
 
   const [settingsSaving, setSettingsSaving] = useState(false);
   const [settingsSaved, setSettingsSaved] = useState(false);
+  const [photoUploading, setPhotoUploading] = useState(false);
+
+  const [basesSaving, setBasesSaving] = useState(false);
+  const [basesSaved, setBasesSaved] = useState(false);
+  const [basesError, setBasesError] = useState("");
 
   async function handleLogout() {
     await fetch("/api/admin/logout", { method: "POST" });
@@ -177,12 +237,8 @@ export default function AdminDashboard({
   async function handleUpload(file: File) {
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
-      const body = await res.json();
-      if (!res.ok) throw new Error(body.error || "アップロードに失敗しました");
-      setDraft((d) => (d ? { ...d, eyecatch: body.url } : d));
+      const url = await uploadImage(file, "news");
+      setDraft((d) => (d ? { ...d, eyecatch: url } : d));
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : "アップロードに失敗しました");
     } finally {
@@ -247,7 +303,7 @@ export default function AdminDashboard({
       const res = await fetch("/api/admin/settings", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(settings.recipients),
+        body: JSON.stringify({ ...settings.recipients, presidentPhoto: settings.presidentPhoto }),
       });
       const result = await res.json();
       if (res.ok) {
@@ -256,6 +312,74 @@ export default function AdminDashboard({
       }
     } finally {
       setSettingsSaving(false);
+    }
+  }
+
+  async function handlePresidentPhotoUpload(file: File) {
+    setPhotoUploading(true);
+    try {
+      const url = await uploadImage(file, "president");
+      setSettings((s) => ({ ...s, presidentPhoto: url }));
+    } catch {
+      // surfaced implicitly by the photo not updating; settings save will retry
+    } finally {
+      setPhotoUploading(false);
+    }
+  }
+
+  function updateBase(index: number, updates: Partial<Base>) {
+    setBases((prev) => prev.map((b, i) => (i === index ? { ...b, ...updates } : b)));
+  }
+
+  function updateCourse(baseIndex: number, courseIndex: number, updates: Partial<Base["courses"][number]>) {
+    setBases((prev) =>
+      prev.map((b, i) =>
+        i === baseIndex
+          ? { ...b, courses: b.courses.map((c, ci) => (ci === courseIndex ? { ...c, ...updates } : c)) }
+          : b
+      )
+    );
+  }
+
+  function addCourse(baseIndex: number) {
+    setBases((prev) =>
+      prev.map((b, i) => (i === baseIndex ? { ...b, courses: [...b.courses, { name: "", area: b.displayName }] } : b))
+    );
+  }
+
+  function removeCourse(baseIndex: number, courseIndex: number) {
+    setBases((prev) =>
+      prev.map((b, i) => (i === baseIndex ? { ...b, courses: b.courses.filter((_, ci) => ci !== courseIndex) } : b))
+    );
+  }
+
+  function addBase() {
+    setBases((prev) => [...prev, { name: "", displayName: "", role: "支店", courses: [] }]);
+  }
+
+  function removeBase(index: number) {
+    if (!confirm("この拠点を削除しますか？契約ゴルフ場もすべて削除されます。")) return;
+    setBases((prev) => prev.filter((_, i) => i !== index));
+  }
+
+  async function handleBasesSave() {
+    setBasesSaving(true);
+    setBasesSaved(false);
+    setBasesError("");
+    try {
+      const res = await fetch("/api/admin/bases", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(bases),
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || "保存に失敗しました");
+      setBases(result);
+      setBasesSaved(true);
+    } catch (err) {
+      setBasesError(err instanceof Error ? err.message : "保存に失敗しました");
+    } finally {
+      setBasesSaving(false);
     }
   }
 
@@ -296,19 +420,16 @@ export default function AdminDashboard({
           </div>
         )}
 
-        <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
+        <div style={{ display: "flex", gap: 10, marginBottom: 24, flexWrap: "wrap" }}>
           {(
             [
               ["news", "お知らせ"],
+              ["bases", "拠点・契約先"],
               ["inquiries", "お問い合わせ"],
-              ["settings", "送信先設定"],
+              ["settings", "設定"],
             ] as [Tab, string][]
           ).map(([key, label]) => (
-            <button
-              key={key}
-              onClick={() => setTab(key)}
-              style={tab === key ? btnPrimary : btnGhost}
-            >
+            <button key={key} onClick={() => setTab(key)} style={tab === key ? btnPrimary : btnGhost}>
               {label}
             </button>
           ))}
@@ -371,27 +492,22 @@ export default function AdminDashboard({
                       />
                     </label>
                   )}
-                  <label style={{ fontSize: 12.5, fontWeight: 700 }}>
-                    アイキャッチ画像
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) handleUpload(file);
-                      }}
-                      style={{ display: "block", marginTop: 6, fontSize: 13 }}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    <span style={{ fontSize: 12.5, fontWeight: 700 }}>アイキャッチ画像</span>
+                    {draft.eyecatch && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={draft.eyecatch}
+                        alt="アイキャッチプレビュー"
+                        style={{ width: "100%", maxWidth: 320, borderRadius: 14 }}
+                      />
+                    )}
+                    <UploadButton
+                      label={draft.eyecatch ? "画像を変更する" : "画像を選択してアップロード"}
+                      uploading={uploading}
+                      onSelect={handleUpload}
                     />
-                  </label>
-                  {uploading && <span style={{ fontSize: 12.5, color: "#5d6b5a" }}>アップロード中…</span>}
-                  {draft.eyecatch && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={draft.eyecatch}
-                      alt="アイキャッチプレビュー"
-                      style={{ width: "100%", maxWidth: 320, borderRadius: 14 }}
-                    />
-                  )}
+                  </div>
                   <label style={{ fontSize: 12.5, fontWeight: 700 }}>
                     本文（段落は空行で区切ってください）
                     <textarea
@@ -415,12 +531,25 @@ export default function AdminDashboard({
             )}
 
             {news.map((post) => (
-              <div key={post.slug} style={{ ...cardStyle, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16 }}>
-                <div>
-                  <div style={{ fontSize: 12, color: "#8aa89a", fontWeight: 700 }}>
-                    {post.date} ／ {post.category}
+              <div
+                key={post.slug}
+                style={{ ...cardStyle, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16 }}
+              >
+                <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
+                  {post.eyecatch && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={post.eyecatch}
+                      alt=""
+                      style={{ width: 56, height: 56, objectFit: "cover", borderRadius: 10, flex: "none" }}
+                    />
+                  )}
+                  <div>
+                    <div style={{ fontSize: 12, color: "#8aa89a", fontWeight: 700 }}>
+                      {post.date} ／ {post.category}
+                    </div>
+                    <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>{post.title}</div>
                   </div>
-                  <div style={{ fontSize: 15, fontWeight: 700, marginTop: 4 }}>{post.title}</div>
                 </div>
                 <div style={{ display: "flex", gap: 8, flex: "none" }}>
                   <button style={btnGhost} onClick={() => startEdit(post)}>
@@ -432,6 +561,91 @@ export default function AdminDashboard({
                 </div>
               </div>
             ))}
+          </div>
+        )}
+
+        {tab === "bases" && (
+          <div>
+            <p style={{ fontSize: 12.5, color: "#5d6b5a", margin: "0 0 18px" }}>
+              会社案内・採用情報ページの拠点一覧と、契約ゴルフ場のポップアップに反映されます。
+            </p>
+            {bases.map((base, baseIndex) => (
+              <div key={baseIndex} style={cardStyle}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 140px auto", gap: 12, marginBottom: 16 }}>
+                  <label style={{ fontSize: 11.5, fontWeight: 700 }}>
+                    表示名（例: 千葉県）
+                    <input
+                      style={inputStyle}
+                      value={base.displayName}
+                      onChange={(e) => updateBase(baseIndex, { displayName: e.target.value })}
+                    />
+                  </label>
+                  <label style={{ fontSize: 11.5, fontWeight: 700 }}>
+                    内部名（例: 千葉）
+                    <input
+                      style={inputStyle}
+                      value={base.name}
+                      onChange={(e) => updateBase(baseIndex, { name: e.target.value })}
+                    />
+                  </label>
+                  <label style={{ fontSize: 11.5, fontWeight: 700 }}>
+                    区分
+                    <select
+                      style={inputStyle}
+                      value={base.role}
+                      onChange={(e) => updateBase(baseIndex, { role: e.target.value as Base["role"] })}
+                    >
+                      <option value="本拠点">本拠点</option>
+                      <option value="支店">支店</option>
+                    </select>
+                  </label>
+                  <div style={{ display: "flex", alignItems: "flex-end" }}>
+                    <button style={btnDanger} onClick={() => removeBase(baseIndex)}>
+                      拠点を削除
+                    </button>
+                  </div>
+                </div>
+
+                <div style={{ fontSize: 12, fontWeight: 700, color: "#1f4d40", marginBottom: 8 }}>
+                  契約ゴルフ場（{base.courses.length}件）
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 12 }}>
+                  {base.courses.map((course, courseIndex) => (
+                    <div key={courseIndex} style={{ display: "grid", gridTemplateColumns: "2fr 1fr auto", gap: 8 }}>
+                      <input
+                        style={inputStyle}
+                        placeholder="ゴルフ場名"
+                        value={course.name}
+                        onChange={(e) => updateCourse(baseIndex, courseIndex, { name: e.target.value })}
+                      />
+                      <input
+                        style={inputStyle}
+                        placeholder="エリア"
+                        value={course.area}
+                        onChange={(e) => updateCourse(baseIndex, courseIndex, { area: e.target.value })}
+                      />
+                      <button style={btnDanger} onClick={() => removeCourse(baseIndex, courseIndex)}>
+                        削除
+                      </button>
+                    </div>
+                  ))}
+                </div>
+                <button style={btnGhost} onClick={() => addCourse(baseIndex)}>
+                  + ゴルフ場を追加
+                </button>
+              </div>
+            ))}
+
+            <div style={{ display: "flex", gap: 10, alignItems: "center", marginTop: 8 }}>
+              <button style={btnGhost} onClick={addBase}>
+                + 拠点を追加
+              </button>
+              <button style={btnPrimary} onClick={handleBasesSave} disabled={basesSaving}>
+                {basesSaving ? "保存中…" : "すべて保存する"}
+              </button>
+              {basesSaved && <span style={{ fontSize: 12.5, color: "#22564b", fontWeight: 700 }}>保存しました</span>}
+              {basesError && <span style={{ fontSize: 12.5, color: "#dc4c3e", fontWeight: 700 }}>{basesError}</span>}
+            </div>
           </div>
         )}
 
@@ -475,52 +689,66 @@ export default function AdminDashboard({
         )}
 
         {tab === "settings" && (
-          <div style={cardStyle}>
-            <h2 style={{ font: "700 17px 'Shippori Mincho', serif", margin: "0 0 6px", color: "#1f4d40" }}>
-              お問い合わせ送信先の設定
-            </h2>
-            <p style={{ fontSize: 12.5, color: "#5d6b5a", margin: "0 0 18px" }}>
-              ここで登録したアドレスは現在ダッシュボードでの管理用に保存されます。フォーム送信時に自動でメール通知するには、別途メール送信サービスとの連携が必要です。
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              <label style={{ fontSize: 12.5, fontWeight: 700 }}>
-                ゴルフ場お問い合わせの送信先
-                <input
-                  style={inputStyle}
-                  value={settings.recipients.course}
-                  onChange={(e) =>
-                    setSettings({ recipients: { ...settings.recipients, course: e.target.value } })
-                  }
-                  placeholder="course@example.com"
+          <div>
+            <div style={cardStyle}>
+              <h2 style={{ font: "700 17px 'Shippori Mincho', serif", margin: "0 0 6px", color: "#1f4d40" }}>
+                代表者写真
+              </h2>
+              <p style={{ fontSize: 12.5, color: "#5d6b5a", margin: "0 0 18px" }}>
+                会社案内ページ「代表挨拶」の写真を差し替えます。
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={settings.presidentPhoto || "/assets/president-photo.jpg"}
+                  alt="代表者写真プレビュー"
+                  style={{ width: "100%", maxWidth: 360, borderRadius: 14, objectFit: "cover" }}
                 />
-              </label>
-              <label style={{ fontSize: 12.5, fontWeight: 700 }}>
-                イベント／プレーヤー様お問い合わせの送信先
-                <input
-                  style={inputStyle}
-                  value={settings.recipients.event}
-                  onChange={(e) =>
-                    setSettings({ recipients: { ...settings.recipients, event: e.target.value } })
-                  }
-                  placeholder="event@example.com"
-                />
-              </label>
-              <label style={{ fontSize: 12.5, fontWeight: 700 }}>
-                採用エントリーの送信先
-                <input
-                  style={inputStyle}
-                  value={settings.recipients.recruit}
-                  onChange={(e) =>
-                    setSettings({ recipients: { ...settings.recipients, recruit: e.target.value } })
-                  }
-                  placeholder="recruit@example.com"
-                />
-              </label>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <button style={btnPrimary} onClick={handleSettingsSave} disabled={settingsSaving}>
-                  {settingsSaving ? "保存中…" : "保存する"}
-                </button>
-                {settingsSaved && <span style={{ fontSize: 12.5, color: "#22564b", fontWeight: 700 }}>保存しました</span>}
+                <UploadButton label="写真を変更する" uploading={photoUploading} onSelect={handlePresidentPhotoUpload} />
+              </div>
+            </div>
+
+            <div style={cardStyle}>
+              <h2 style={{ font: "700 17px 'Shippori Mincho', serif", margin: "0 0 6px", color: "#1f4d40" }}>
+                お問い合わせ送信先の設定
+              </h2>
+              <p style={{ fontSize: 12.5, color: "#5d6b5a", margin: "0 0 18px" }}>
+                Gmail連携が設定されていれば、ここで登録したアドレスにフォーム送信時のメール通知が届きます。
+              </p>
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                  ゴルフ場お問い合わせの送信先
+                  <input
+                    style={inputStyle}
+                    value={settings.recipients.course}
+                    onChange={(e) => setSettings({ ...settings, recipients: { ...settings.recipients, course: e.target.value } })}
+                    placeholder="course@example.com"
+                  />
+                </label>
+                <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                  イベント／プレーヤー様お問い合わせの送信先
+                  <input
+                    style={inputStyle}
+                    value={settings.recipients.event}
+                    onChange={(e) => setSettings({ ...settings, recipients: { ...settings.recipients, event: e.target.value } })}
+                    placeholder="event@example.com"
+                  />
+                </label>
+                <label style={{ fontSize: 12.5, fontWeight: 700 }}>
+                  採用エントリーの送信先
+                  <input
+                    style={inputStyle}
+                    value={settings.recipients.recruit}
+                    onChange={(e) => setSettings({ ...settings, recipients: { ...settings.recipients, recruit: e.target.value } })}
+                    placeholder="recruit@example.com"
+                  />
+                </label>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <button style={btnPrimary} onClick={handleSettingsSave} disabled={settingsSaving}>
+                    {settingsSaving ? "保存中…" : "保存する"}
+                  </button>
+                  {settingsSaved && <span style={{ fontSize: 12.5, color: "#22564b", fontWeight: 700 }}>保存しました</span>}
+                </div>
               </div>
             </div>
           </div>

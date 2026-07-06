@@ -4,9 +4,9 @@ import path from "path";
 import { put } from "@vercel/blob";
 import { ADMIN_COOKIE, isAuthorized } from "@/lib/auth";
 
-const UPLOAD_DIR = path.join(process.cwd(), "public", "uploads", "news");
 const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
 const MAX_SIZE = 8 * 1024 * 1024;
+const ALLOWED_FOLDERS = ["news", "president"];
 
 export async function POST(req: NextRequest) {
   if (!isAuthorized(req.cookies.get(ADMIN_COOKIE)?.value)) {
@@ -15,6 +15,8 @@ export async function POST(req: NextRequest) {
 
   const formData = await req.formData();
   const file = formData.get("file");
+  const folderInput = formData.get("folder");
+  const folder = typeof folderInput === "string" && ALLOWED_FOLDERS.includes(folderInput) ? folderInput : "news";
 
   if (!(file instanceof File)) {
     return NextResponse.json({ error: "ファイルが見つかりません" }, { status: 400 });
@@ -31,15 +33,16 @@ export async function POST(req: NextRequest) {
   const filename = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}${safeExt}`;
 
   if (process.env.BLOB_READ_WRITE_TOKEN) {
-    const blob = await put(`news/${filename}`, file, {
+    const blob = await put(`${folder}/${filename}`, file, {
       access: "public",
       contentType: file.type,
     });
     return NextResponse.json({ url: blob.url });
   }
 
-  await fs.mkdir(UPLOAD_DIR, { recursive: true });
+  const uploadDir = path.join(process.cwd(), "public", "uploads", folder);
+  await fs.mkdir(uploadDir, { recursive: true });
   const buffer = Buffer.from(await file.arrayBuffer());
-  await fs.writeFile(path.join(UPLOAD_DIR, filename), buffer);
-  return NextResponse.json({ url: `/uploads/news/${filename}` });
+  await fs.writeFile(path.join(uploadDir, filename), buffer);
+  return NextResponse.json({ url: `/uploads/${folder}/${filename}` });
 }

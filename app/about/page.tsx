@@ -5,6 +5,8 @@ import Footer from "@/components/Footer";
 import PageBanner from "@/components/PageBanner";
 import GlassPanel from "@/components/GlassPanel";
 import ContractBases from "@/components/ContractBases";
+import { getBases } from "@/lib/bases";
+import { getSettings } from "@/lib/settings";
 
 export const metadata: Metadata = {
   title: "会社案内 ｜ 株式会社S-Style",
@@ -32,7 +34,10 @@ const companyInfo = [
   { label: "拠点数", value: "全国8拠点（本拠点＋7支部）" },
 ];
 
-export default function AboutPage() {
+export const dynamic = "force-dynamic";
+
+export default async function AboutPage() {
+  const [bases, settings] = await Promise.all([getBases(), getSettings()]);
   return (
     <>
       <Header />
@@ -114,7 +119,7 @@ export default function AboutPage() {
             }}
           >
             <Image
-              src="/assets/president-photo.jpg"
+              src={settings.presidentPhoto || "/assets/president-photo.jpg"}
               alt="代表取締役 榮 恵里香"
               fill
               style={{ objectFit: "cover" }}
@@ -230,7 +235,7 @@ export default function AboutPage() {
         </GlassPanel>
       </section>
 
-      <ContractBases />
+      <ContractBases bases={bases} />
 
       <Footer />
     </>

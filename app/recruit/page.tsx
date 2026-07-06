@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import GlassPanel from "@/components/GlassPanel";
 import ContractBases from "@/components/ContractBases";
 import RecruitForm from "@/components/RecruitForm";
+import { getBases } from "@/lib/bases";
 
 export const metadata: Metadata = {
   title: "採用情報 ｜ 株式会社S-Style",
@@ -49,7 +50,10 @@ const requirements = [
   { label: "選考の流れ", value: "エントリー → 面接 → 研修 → 配属" },
 ];
 
-export default function RecruitPage() {
+export const dynamic = "force-dynamic";
+
+export default async function RecruitPage() {
+  const bases = await getBases();
   return (
     <>
       <Header />
@@ -172,7 +176,7 @@ export default function RecruitPage() {
         </GlassPanel>
       </section>
 
-      <ContractBases />
+      <ContractBases bases={bases} />
 
       <RecruitForm />
 
