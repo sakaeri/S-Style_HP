@@ -118,12 +118,17 @@ export default async function AboutPage() {
               overflow: "hidden",
             }}
           >
-            <Image
-              src={settings.presidentPhoto || "/assets/president-photo.jpg"}
-              alt="代表取締役 榮 恵里香"
-              fill
-              style={{ objectFit: "cover" }}
-            />
+            {settings.presidentPhoto ? (
+              // Uploaded photos are data URIs; next/image can't optimize those, so render directly.
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={settings.presidentPhoto}
+                alt="代表取締役 榮 恵里香"
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+              />
+            ) : (
+              <Image src="/assets/president-photo.jpg" alt="代表取締役 榮 恵里香" fill style={{ objectFit: "cover" }} />
+            )}
           </div>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
             <Image

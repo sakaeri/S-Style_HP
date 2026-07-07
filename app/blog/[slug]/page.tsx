@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -91,7 +90,13 @@ export default async function ArticlePage({
           }}
         >
           {post.eyecatch && (
-            <Image src={post.eyecatch} alt={post.title} fill style={{ objectFit: "cover" }} />
+            // Uploaded eyecatches are data URIs; next/image can't optimize those, so render directly.
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={post.eyecatch}
+              alt={post.title}
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}
+            />
           )}
           {!post.eyecatch && (
             <span

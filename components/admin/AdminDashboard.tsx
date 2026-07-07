@@ -175,16 +175,15 @@ function senderSummary(inq: Inquiry): string {
   return inq.fields.name || "（不明）";
 }
 
-const MAX_UPLOAD_SIZE = 4 * 1024 * 1024;
+const MAX_UPLOAD_SIZE = 1.5 * 1024 * 1024;
 
-async function uploadImage(file: File, folder: "news" | "president"): Promise<string> {
+async function uploadImage(file: File): Promise<string> {
   if (file.size > MAX_UPLOAD_SIZE) {
-    throw new Error("画像サイズが大きすぎます（4MBまで）。写真アプリなどで縮小してから再度お試しください。");
+    throw new Error("画像サイズが大きすぎます（1.5MBまで）。写真アプリなどで縮小してから再度お試しください。");
   }
 
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("folder", folder);
   const res = await fetch("/api/admin/upload", { method: "POST", body: formData });
 
   let body: { url?: string; error?: string };
@@ -262,7 +261,7 @@ export default function AdminDashboard({
   async function handleUpload(file: File) {
     setUploading(true);
     try {
-      const url = await uploadImage(file, "news");
+      const url = await uploadImage(file);
       setDraft((d) => (d ? { ...d, eyecatch: url } : d));
     } catch (err) {
       setSaveError(err instanceof Error ? err.message : "アップロードに失敗しました");
@@ -344,7 +343,7 @@ export default function AdminDashboard({
     setPhotoUploading(true);
     setPhotoError("");
     try {
-      const url = await uploadImage(file, "president");
+      const url = await uploadImage(file);
       setSettings((s) => ({ ...s, presidentPhoto: url }));
     } catch (err) {
       setPhotoError(err instanceof Error ? err.message : "アップロードに失敗しました");
