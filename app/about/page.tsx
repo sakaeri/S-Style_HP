@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import PageBanner from "@/components/PageBanner";
 import GlassPanel from "@/components/GlassPanel";
 import ContractBases from "@/components/ContractBases";
+import InfoTable from "@/components/InfoTable";
 import { getBases } from "@/lib/bases";
 import { getSettings } from "@/lib/settings";
 
@@ -199,44 +200,7 @@ export default async function AboutPage() {
           <h2 style={{ font: "700 24px 'Shippori Mincho', serif", color: "#fff", margin: "8px 0 24px" }}>
             会社概要
           </h2>
-          <div
-            style={{
-              background: "rgba(255,255,255,.8)",
-              backdropFilter: "blur(10px)",
-              WebkitBackdropFilter: "blur(10px)",
-              borderRadius: 18,
-              overflow: "hidden",
-              border: "1px solid rgba(255,255,255,.55)",
-              boxShadow: "0 10px 30px rgba(16,40,34,.18)",
-            }}
-          >
-            {companyInfo.map((row, i) => (
-              <div
-                key={row.label}
-                className="kv-row"
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 1fr",
-                  borderBottom: i < companyInfo.length - 1 ? "1px solid rgba(31,77,64,.12)" : "none",
-                }}
-              >
-                <div
-                  style={{
-                    padding: "20px 24px",
-                    background: "rgba(34,86,75,.12)",
-                    fontWeight: 700,
-                    fontSize: 14,
-                    color: "#1f4d40",
-                  }}
-                >
-                  {row.label}
-                </div>
-                <div style={{ padding: "20px 24px", fontSize: 14, fontWeight: 500, lineHeight: 1.9, color: "#33463d" }}>
-                  {row.value}
-                </div>
-              </div>
-            ))}
-          </div>
+          <InfoTable rows={companyInfo} />
         </GlassPanel>
       </section>
 

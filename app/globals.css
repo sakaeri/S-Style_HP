@@ -119,8 +119,18 @@ select:focus {
   .msg-grid {
     grid-template-columns: 1fr !important;
   }
-  .kv-row {
-    grid-template-columns: 120px 1fr !important;
+  .info-row {
+    grid-template-columns: 1fr !important;
+  }
+  .info-label {
+    padding: 14px 20px 2px !important;
+    background: transparent !important;
+    font-size: 11.5px !important;
+    letter-spacing: 0.04em;
+    color: #6f9d8a;
+  }
+  .info-value {
+    padding: 0 20px 14px !important;
   }
   .form-row2 {
     grid-template-columns: 1fr !important;
