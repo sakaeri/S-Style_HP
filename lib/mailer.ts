@@ -15,7 +15,11 @@ function getTransporter() {
 }
 
 export async function sendMail(opts: { to: string; subject: string; text: string }): Promise<void> {
-  if (!isMailerConfigured()) return;
+  if (!isMailerConfigured()) {
+    throw new Error(
+      "メール送信が設定されていません（環境変数 GMAIL_USER / GMAIL_APP_PASSWORD が見つかりません）"
+    );
+  }
   const transporter = getTransporter();
   await transporter.sendMail({
     from: `"S-Style サイト通知" <${process.env.GMAIL_USER}>`,
