@@ -71,7 +71,7 @@ export async function POST(req: NextRequest) {
       await sendMail({
         to: recipient,
         subject: `【S-Style】${TYPE_LABEL[inquiryType]}が届きました`,
-        text: `サイトから新しいお問い合わせがありました。\n\n${summary}\n\n管理画面: /admin`,
+        text: `HPから新しいお問い合わせがありました。\n\n${summary}\n\n管理画面: /admin`,
       });
     } catch (err) {
       console.error("お問い合わせ通知メールの送信に失敗しました", err);

@@ -22,7 +22,7 @@ export async function sendMail(opts: { to: string; subject: string; text: string
   }
   const transporter = getTransporter();
   await transporter.sendMail({
-    from: `"S-Style サイト通知" <${process.env.GMAIL_USER}>`,
+    from: `"S-Style HP通知" <${process.env.GMAIL_USER}>`,
     to: opts.to,
     subject: opts.subject,
     text: opts.text,
