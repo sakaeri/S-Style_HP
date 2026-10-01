@@ -8,6 +8,8 @@ const inputStyle: React.CSSProperties = {
   borderRadius: 12,
   fontSize: 14,
   background: "#fbfdfb",
+  width: "100%",
+  boxSizing: "border-box",
 };
 
 const labelStyle: React.CSSProperties = {
@@ -17,6 +19,7 @@ const labelStyle: React.CSSProperties = {
   fontSize: 13,
   fontWeight: 700,
   color: "#123329",
+  minWidth: 0,
 };
 
 const required = (
