@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import PageBanner from "@/components/PageBanner";
 import ContactTabs from "@/components/ContactTabs";
-import ContactEventForm from "@/components/ContactEventForm";
+import ContactLink from "@/components/ContactLink";
 
 export const metadata: Metadata = {
   title: "イベントキャディ・プレーヤー様お問い合わせ ｜ 株式会社S-Style",
@@ -70,7 +70,10 @@ export default function ContactEventPage() {
         </div>
       </section>
 
-      <ContactEventForm />
+      <ContactLink
+        title="イベントキャディ・プレーヤー様お問い合わせ"
+        description="お名前・メールアドレス・ご希望日やゴルフ場名などをご入力のうえ送信してください。担当者より折り返しご連絡いたします。"
+      />
       <Footer />
     </>
   );
