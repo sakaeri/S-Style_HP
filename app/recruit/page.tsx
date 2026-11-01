@@ -156,7 +156,7 @@ export default async function RecruitPage() {
 
       <ContactLink
         title="採用エントリー"
-        description="お名前・メールアドレス・ご質問内容をご入力のうえ送信してください。担当者より折り返しご連絡いたします。"
+        description="下記のボタンより専用のお問い合わせ窓口へお進みいただき、お名前・メールアドレス・ご質問内容をご入力ください。担当者より折り返しご連絡いたします。"
         buttonLabel="エントリーする"
       />
 
